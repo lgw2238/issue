@@ -48,7 +48,7 @@
 									<header class="major">
 										<h2>우리동네 날씨 조회</h2>
 									</header>
-									<p>현재 계신 동네는 ${localPoint} 입니다. </p>
+									<p>현재 계신 동네의 온도는 ${localWeather.fcstValue}℃ 입니다. </p>
 								</div>
 							</section>
 

@@ -5,9 +5,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.lang.model.element.Element;
@@ -32,25 +35,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ApiServiceImpl implements ApiService{
-	@Value("${WEATHER.API.DECODE.KEY}")
-	public String decodeWeatherApiKey;
+	
+	@Value("${WEATHER.API.ENCODE.KEY}")
+	public String encodeWeatherApiKey;
 
 	@Value("${STOCK.API.DECODE.KEY}")
 	public String decodeStockApiKey;
 	
 	public Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	
-	private final String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
-	private final String serviceKey = decodeWeatherApiKey; /*공공데이터포털에서 받은 인증키*/
+
 		
+	
 	
 	@Override
 	public List<WeatherVo> selectWeatherData(WeatherVo vo) throws Exception {
-		
-		
+		logger.info("decodeWeatherApiKey:{}", encodeWeatherApiKey);
+	    String BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
+		String serviceKey = encodeWeatherApiKey; /*공공데이터포털에서 받은 인증키*/
 		List<WeatherVo> weatherDataList = new ArrayList<WeatherVo>();	
 		
+		/* 오늘 날짜 */
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Calendar c1 = Calendar.getInstance();
+        String strToday = sdf.format(c1.getTime());
+        
+        /* 현재 시간 */
+        LocalTime now = LocalTime.now();
+        // 시, 분
+        int hour = now.getHour()-1;
+        int minute = now.getMinute();
+        String strTime = (Integer.toString(hour)+Integer.toString(minute));
+        
 		/* api 정보 담을 객체 생성  */
 		WeatherVo weather = new WeatherVo();
 		
@@ -61,11 +77,13 @@ public class ApiServiceImpl implements ApiService{
 		    urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
-		    urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode("20200807", "UTF-8"));
-		    urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode("1100", "UTF-8"));
+		    urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(strToday, "UTF-8"));
+		    urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(strTime, "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode("76", "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode("122", "UTF-8"));
-		
+		    	    	   		    
+		    logger.info("Request url {}", urlBuilder.toString());
+		    		    
 		    URL url = new URL(urlBuilder.toString());
 		    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		    conn.setRequestMethod("GET");
@@ -109,17 +127,26 @@ public class ApiServiceImpl implements ApiService{
 		    Items items = data.getResponse().getBody().getItems();
 		    
 		    logger.info("items:{}",items);
-		    
+		    int i = 0;
 		    for (WeatherVo item : items.getItem()) {
-		      if (item.getCategory() == CategoryType.T3H) {
-		    	  
+		    	  logger.info("count:"+i+"", i);
+		    	  methodWeather.setFcstValue(item.getFcstValue());
+		    	  methodWeather.setBaseDate(item.getBaseDate());
+		    	  methodWeather.setCategory(CategoryType.TMP);
+		      if (item.getCategory() == CategoryType.T3H) {	    	  
+
 		      } else if (item.getCategory() == CategoryType.REH) {
-		    	  
+		    	  		    
 		      } else if (item.getCategory() == CategoryType.SKY) {
 	
 		      } else if (item.getCategory() == CategoryType.PTY) {
 		    	  
+		      } else if (item.getCategory() == CategoryType.TMP) {
+		
+		      } else {
+		    	  
 		      }
+		      i++;
 		    }
 		  } catch (JsonMappingException e) {
 		    e.printStackTrace();

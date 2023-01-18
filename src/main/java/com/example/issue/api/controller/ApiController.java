@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.issue.api.service.ApiService;
 import com.example.issue.api.vo.ApiVo;
 import com.example.issue.api.vo.WeatherVo;
+import com.example.issue.api.vo.WeatherVo.CategoryType;
 
 
 @RestController
@@ -56,9 +57,10 @@ public class ApiController {
 		
 		
 		List<WeatherVo> localWeather = apiService.selectWeatherData(vo);
-		logger.info("localWeather: {}", localWeather.toString());
+		float todayTemp = localWeather.get(0).getFcstValue();
+		logger.info("localWeather: {}", localWeather.get(0).getFcstValue());
 		
-		mav.addObject("localWeather", "localWeather");
+		mav.addObject("localWeather", localWeather.get(0));
 		mav.addObject("viewName", "Weather API");	
 		return mav;
 		
@@ -111,7 +113,7 @@ public class ApiController {
 	}
 	
 	/**
-	  * @description (3)관광지 추천 API 화면으로 이동
+	  * @description (4)최신 뉴스조회 API 화면으로 이동
 	  * @date 2023.01.17
 	  * @author lgw
 	  * @param req
