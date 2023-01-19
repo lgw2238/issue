@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import com.example.issue.api.service.ApiService;
 import com.example.issue.api.vo.ApiResponse;
 import com.example.issue.api.vo.ApiVo;
+import com.example.issue.api.vo.StockVo;
 import com.example.issue.api.vo.ApiVo.Items;
 import com.example.issue.api.vo.WeatherVo;
 import com.example.issue.api.vo.WeatherVo.CategoryType;
@@ -42,11 +43,10 @@ public class ApiServiceImpl implements ApiService{
 	@Value("${STOCK.API.DECODE.KEY}")
 	public String decodeStockApiKey;
 	
-	public Logger logger = LoggerFactory.getLogger(this.getClass());
-
-
+	@Value("${STOCK.ExchangeRate.API.KEY}")
+	public String exchangeRateApiKey;
 		
-	
+	public Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
 	public List<WeatherVo> selectWeatherData(WeatherVo vo) throws Exception {
@@ -152,6 +152,9 @@ public class ApiServiceImpl implements ApiService{
 		    e.printStackTrace();
 		  } catch (JsonProcessingException e) {
 		    e.printStackTrace();
+		  } catch (NullPointerException e) {
+			logger.info("NullPointerException");
+			e.printStackTrace();
 		 }
 		return methodWeather;
 	}
@@ -160,6 +163,68 @@ public class ApiServiceImpl implements ApiService{
 	public String selectApiData(ApiVo vo) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<StockVo> selectExchangeRateData(StockVo vo) throws Exception {
+		 String BASE_URL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
+		 String serviceKey = exchangeRateApiKey; /*공공데이터포털에서 받은 인증키*/
+		 List<StockVo> exchangeRateDataList = new ArrayList<StockVo>();	
+		 
+		 /* 오늘 날짜 */
+		    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	        Calendar c1 = Calendar.getInstance();
+	        String strToday = sdf.format(c1.getTime());
+	        
+	        /* 현재 시간 */
+	        LocalTime now = LocalTime.now();
+	        // 시, 분
+	        int hour = now.getHour();
+	        int minute = now.getMinute();
+	        String strTime = (Integer.toString(hour)+Integer.toString(minute));
+	        
+			/* api 정보 담을 객체 생성  */
+	        StockVo exchangeRate = new StockVo();	
+	        
+	        
+		try {
+			  
+		    StringBuilder urlBuilder = new StringBuilder(BASE_URL);
+		    urlBuilder.append("?" + URLEncoder.encode("authkey", "UTF-8") + "=" + serviceKey);
+		    urlBuilder.append("&" + URLEncoder.encode("searchdate", "UTF-8") + "=" + URLEncoder.encode(strToday, "UTF-8"));
+		    urlBuilder.append("&" + URLEncoder.encode("data", "UTF-8") + "=" + URLEncoder.encode("AP01", "UTF-8"));
+	    	    	   		    
+		    logger.info("Request url {}", urlBuilder.toString());
+		    		    
+		    URL url = new URL(urlBuilder.toString());
+		    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		    conn.setRequestMethod("GET");
+		    conn.setRequestProperty("Content-type", "application/json");
+		    logger.info("Response code: " + conn.getResponseCode());
+		
+		    if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+		        StringBuilder sb = new StringBuilder();
+		
+		        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		        in.lines().forEach(line -> {
+		          sb.append(line);
+		        });
+		
+		        in.close();
+		        conn.disconnect();
+		
+		        logger.info(sb.toString());
+		        
+		        /* 날씨 정보 JSON 가공 */
+		        exchangeRate = null;
+		        
+		        exchangeRateDataList.add(exchangeRate);
+		    }
+		  } catch (Exception e) {
+		    e.printStackTrace();
+		  }  
+	  
+	  return exchangeRateDataList;
 	}
 }
 
