@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.example.issue.api.vo.StockVo;
 
@@ -34,11 +37,7 @@ public class test {
 	        // 시, 분
 	        int hour = now.getHour();
 	        int minute = now.getMinute();
-	        String strTime = (Integer.toString(hour)+Integer.toString(minute));
-	        
-			/* api 정보 담을 객체 생성  */
-	        StockVo exchangeRate = new StockVo();	
-	        
+	        String strTime = (Integer.toString(hour)+Integer.toString(minute));	        
 	        
 		try {
 			  
@@ -54,7 +53,7 @@ public class test {
 		    conn.setRequestMethod("GET");
 		    conn.setRequestProperty("Content-type", "application/json");
 		    System.out.println("Response code: " + conn.getResponseCode());
-		
+		    String data;
 		    if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 		        StringBuilder sb = new StringBuilder();
 		
@@ -65,13 +64,34 @@ public class test {
 		
 		        in.close();
 		        conn.disconnect();
-		
+		        
+		        data = sb.toString();
 		        System.out.println(sb);
-		        
-		        /* 날씨 정보 JSON 가공 */
-		        exchangeRate = null;
-		        
-		        exchangeRateDataList.add(exchangeRate);
+		        	        
+		        JSONParser parser = new JSONParser();
+		        JSONArray jsonArray = (JSONArray) parser.parse(data);
+		        System.out.println(jsonArray);
+		      
+		        for(int i = 0; i < jsonArray.size(); i++) {
+		        	/* api 정보 담을 객체 생성  */
+			        StockVo exchangeRate = new StockVo();	
+			        
+		        	JSONObject obj = (JSONObject) jsonArray.get(i);	
+		        	 if(obj != null) {
+		        		 exchangeRate.setCurName((String) obj.get("cur_nm"));
+			        	 exchangeRate.setBillName((String) obj.get("cur_unit"));
+			        	 exchangeRate.setSendTax((String) obj.get("tts"));
+			        	 exchangeRate.setReceiveTax((String) obj.get("ttb"));
+			        	 exchangeRate.setStandatdTax((String) obj.get("bkpr"));
+			        	 
+		        	 }else {
+		        		 
+		        	 }		   
+		        	 System.out.println(exchangeRate);
+		        	 System.out.println(i);
+		        	 exchangeRateDataList.add(exchangeRate);		        	 
+		        }		        
+		       System.out.println(exchangeRateDataList);
 		    }
 		  } catch (Exception e) {
 		    e.printStackTrace();
