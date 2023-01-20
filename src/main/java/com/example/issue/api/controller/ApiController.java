@@ -1,6 +1,8 @@
 package com.example.issue.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.issue.api.service.ApiService;
 import com.example.issue.api.vo.ApiVo;
+import com.example.issue.api.vo.StockVo;
 import com.example.issue.api.vo.WeatherVo;
 import com.example.issue.api.vo.WeatherVo.CategoryType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
@@ -80,10 +84,19 @@ public class ApiController {
 	public ModelAndView goStockApiPage(Model model
 			, HttpServletResponse response
 			, HttpServletRequest request
-			, HttpSession session) throws Exception {
+			, HttpSession session
+			, StockVo vo) throws Exception {
 		ModelAndView mav = new ModelAndView("api/stock");
 		logger.info("stock Api start");
 			
+				
+		/* 환율 정보 조회 데이터  */
+		List<StockVo> exchangeRateDataList = apiService.selectExchangeRateData(vo);
+		logger.info("controller ::: exchangeRateDataList:{}", exchangeRateDataList);
+		logger.info("controller ::: exchangeRateDataList111111:{}", exchangeRateDataList.get(1));
+		logger.info("controller ::: exchangeRateDataList111111:{}", exchangeRateDataList.get(2));
+		logger.info("controller ::: exchangeRateDataList111111:{}", exchangeRateDataList.get(3));
+		mav.addObject("exchangeRateDataList", exchangeRateDataList);	
 		mav.addObject("viewName", "Stock API");	
 		return mav;
 		

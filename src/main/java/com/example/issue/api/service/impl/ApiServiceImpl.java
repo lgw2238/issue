@@ -16,7 +16,9 @@ import java.util.List;
 import javax.lang.model.element.Element;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,7 +170,7 @@ public class ApiServiceImpl implements ApiService{
 	@Override
 	public List<StockVo> selectExchangeRateData(StockVo vo) throws Exception {
 		 String BASE_URL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
-		 String serviceKey = exchangeRateApiKey; /*공공데이터포털에서 받은 인증키*/
+		 String serviceKey = exchangeRateApiKey;
 		 List<StockVo> exchangeRateDataList = new ArrayList<StockVo>();	
 		 
 		 /* 오늘 날짜 */
@@ -181,27 +183,23 @@ public class ApiServiceImpl implements ApiService{
 	        // 시, 분
 	        int hour = now.getHour();
 	        int minute = now.getMinute();
-	        String strTime = (Integer.toString(hour)+Integer.toString(minute));
-	        
-			/* api 정보 담을 객체 생성  */
-	        StockVo exchangeRate = new StockVo();	
-	        
+	        String strTime = (Integer.toString(hour)+Integer.toString(minute));	        
 	        
 		try {
 			  
 		    StringBuilder urlBuilder = new StringBuilder(BASE_URL);
 		    urlBuilder.append("?" + URLEncoder.encode("authkey", "UTF-8") + "=" + serviceKey);
 		    urlBuilder.append("&" + URLEncoder.encode("searchdate", "UTF-8") + "=" + URLEncoder.encode(strToday, "UTF-8"));
-		    urlBuilder.append("&" + URLEncoder.encode("data", "UTF-8") + "=" + URLEncoder.encode("AP01", "UTF-8"));
+		    urlBuilder.append("&" + URLEncoder.encode("data", "UTF-8") + "=" + URLEncoder.encode("AP01", "UTF-8")); // AP01 : 환율정보 
 	    	    	   		    
-		    logger.info("Request url {}", urlBuilder.toString());
+		    System.out.println(urlBuilder.toString());
 		    		    
 		    URL url = new URL(urlBuilder.toString());
 		    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		    conn.setRequestMethod("GET");
 		    conn.setRequestProperty("Content-type", "application/json");
-		    logger.info("Response code: " + conn.getResponseCode());
-		
+		    System.out.println("Response code: " + conn.getResponseCode());
+		    String data;
 		    if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 		        StringBuilder sb = new StringBuilder();
 		
@@ -212,19 +210,42 @@ public class ApiServiceImpl implements ApiService{
 		
 		        in.close();
 		        conn.disconnect();
-		
-		        logger.info(sb.toString());
 		        
-		        /* 날씨 정보 JSON 가공 */
-		        exchangeRate = null;
-		        
-		        exchangeRateDataList.add(exchangeRate);
-		    }
+		        data = sb.toString();
+		        System.out.println(sb);
+		        	        
+		        JSONParser parser = new JSONParser();
+		        JSONArray jsonArray = (JSONArray) parser.parse(data);
+		        System.out.println(jsonArray);
+		      
+		        for(int i = 0; i < jsonArray.size(); i++) {
+		        	/* api 정보 담을 객체 생성  */
+			        StockVo exchangeRate = new StockVo();	
+			        
+		        	JSONObject obj = (JSONObject) jsonArray.get(i);	
+		        	 if(obj != null) {		        		 
+		        		 exchangeRate.setCurName((String) obj.get("cur_nm"));
+			        	 exchangeRate.setBillName((String) obj.get("cur_unit"));
+			        	 exchangeRate.setSendTax((String) obj.get("tts"));
+			        	 exchangeRate.setReceiveTax((String) obj.get("ttb"));
+			        	 exchangeRate.setStandatdTax((String) obj.get("deal_bas_r"));			        	 
+		        	 }else { // obj 가 null 인 경우
+		        		 
+		        	 	}		   
+			        	 if(exchangeRate.getBillName().equals("USD") || exchangeRate.getBillName().equals("JPY(100)") ||
+			        		exchangeRate.getBillName().equals("EUR") || exchangeRate.getBillName().equals("CNH") ||
+			        		exchangeRate.getBillName().equals("EUR") || exchangeRate.getBillName().equals("THB")) {
+			        		exchangeRateDataList.add(exchangeRate);		 
+			        	 }
+		        	       	 
+		        	}		        
+		        logger.info("exchangeRateDataList:{}", exchangeRateDataList);
+		    	}
 		  } catch (Exception e) {
 		    e.printStackTrace();
 		  }  
-	  
-	  return exchangeRateDataList;
+		
+		return exchangeRateDataList;
 	}
 }
 

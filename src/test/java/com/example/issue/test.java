@@ -78,18 +78,24 @@ public class test {
 			        
 		        	JSONObject obj = (JSONObject) jsonArray.get(i);	
 		        	 if(obj != null) {
+		        		 
 		        		 exchangeRate.setCurName((String) obj.get("cur_nm"));
 			        	 exchangeRate.setBillName((String) obj.get("cur_unit"));
 			        	 exchangeRate.setSendTax((String) obj.get("tts"));
 			        	 exchangeRate.setReceiveTax((String) obj.get("ttb"));
-			        	 exchangeRate.setStandatdTax((String) obj.get("bkpr"));
+			        	 exchangeRate.setStandatdTax((String) obj.get("deal_bas_r"));
 			        	 
 		        	 }else {
 		        		 
 		        	 }		   
 		        	 System.out.println(exchangeRate);
 		        	 System.out.println(i);
-		        	 exchangeRateDataList.add(exchangeRate);		        	 
+		        	 if(exchangeRate.getBillName().equals("USD") || exchangeRate.getBillName().equals("JPY(100)") ||
+		        		exchangeRate.getBillName().equals("EUR") || exchangeRate.getBillName().equals("CNH") ||
+		        		exchangeRate.getBillName().equals("EUR") || exchangeRate.getBillName().equals("THB")) {
+		        		 exchangeRateDataList.add(exchangeRate);		 
+		        	 }
+		        	       	 
 		        }		        
 		       System.out.println(exchangeRateDataList);
 		    }

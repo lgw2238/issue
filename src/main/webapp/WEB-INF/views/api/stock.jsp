@@ -1,11 +1,37 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+var exchangeRateDataList = "${exchangeRateDataList}";
+	$(document).ready(function() {
+		makeExchangeTable(exchangeRateDataList);	
+	});
+
+function makeExchangeTable(exchangeRateDataList){
+
+
+		console.log(typeof exchangeRateDataList);
+
+		/*환율 화면 생성*/
+		var makeExchangeTableHtml = "" ;
+ 		for(var i = 0; i< exchangeRateDataList.count; i++){
+			if(exchangeRateDataList[i].billName != null){
+				makeExchangeTableHtml += "<tr>"; 
+				makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].curName+ "</td>"
+			    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].billName+ "</td>"
+			    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].sendTax+ "</td>"
+			    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].receiveTax+ "</td>"
+			    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].standatdTax+ "</td>"
+			    makeExchangeTableHtml += "</tr>"; 
+			}
+		}
+		console.log(makeExchangeTableHtml);
+		$("#exchangeDataTable").append(makeExchangeTableHtml);
+   }
+
+
+
+</script>
 <html>
 	<head>
 		<title>${viewName}</title>
@@ -15,34 +41,11 @@
 		<noscript><link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/noscript.css" /></noscript>
 	</head>
 	<body class="is-preload">
-
+		
 		<!-- Wrapper -->
 			<div id="wrapper">
 			 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
-<!--	
-				Header
-				Note: The "styleN" class below should match that of the banner element.
-					<header id="header" class="alt style2">
-						<a href="index.html" class="logo"><strong>ISSUE</strong> <span>by LGW</span></a>
-						<nav>
-							<a href="#menu">Menu</a>
-						</nav>
-					</header>
-
-				Menu
-					<nav id="menu">
-						<ul class="links">
-							<li><a href="index.html">Home</a></li>
-							<li><a href="landing.html">Landing</a></li>
-							<li><a href="generic.html">Generic</a></li>
-							<li><a href="elements.html">Elements</a></li>
-						</ul>
-						<ul class="actions stacked">
-							<li><a href="#" class="button primary fit">Get Started</a></li>
-							<li><a href="#" class="button fit">Log In</a></li>
-						</ul>
-					</nav>
- -->
+			
 				<!-- Banner -->
 				<!-- Note: The "styleN" class below should match that of the header element. -->
 					<section id="banner" class="style2">
@@ -101,7 +104,28 @@
 											</header>
 											<p></p>
 											<ul class="actions">
-												<li><a href="generic.html" class="button">Learn more</a></li>
+												<div id="dataDiv">
+													<table class="alt">
+															<thead>
+																<tr>
+																	<th>국가</th>
+																	<th>통화</th>
+																	<th>송금 받을 때</th>
+																	<th>송금 보낼 때</th>
+																	<th>환율</th>
+																</tr>
+															</thead>
+															<tbody id="exchangeDataTable">
+															
+															</tbody>
+<!-- 															<tfoot>
+																<tr>
+																	<td colspan="2"></td>
+																	<td>100.00</td>
+																</tr>
+															</tfoot> -->
+														</table>																														
+												</div>
 											</ul>
 										</div>
 									</div>
