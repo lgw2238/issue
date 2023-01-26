@@ -23,7 +23,7 @@ public class WeatherVo {
 	  private CategoryType category;
 
 	  /** 예보 값 */
-	  private float fcstValue;
+	  private String fcstValue;
 
 	  /** 예보지점 X 좌표 */
 	  private float nx;
@@ -47,6 +47,7 @@ public class WeatherVo {
 	    UUU("동서바람성분", "m/s"),
 	    VVV("남북바람성분", "m/s"),
 	    REH("습도", "%"),    
+	    PCP("1시간 강수량", "mm"),    
 	    VEC("풍향", "m/s"),
 	    WSD("풍속", "1");
 

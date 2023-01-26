@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.issue.api.vo.ApiVo;
+import com.example.issue.api.vo.NewsVo;
 import com.example.issue.api.vo.StockVo;
 import com.example.issue.api.vo.WeatherVo;
 import com.example.issue.comm.model.BoardVo;
@@ -35,5 +36,14 @@ public interface ApiService {
 	 * @throws Exception
 	 */
 	public List<StockVo> selectExchangeRateData(StockVo vo) throws Exception;
+
+	/**
+	 * @description API 목록 조회(4) - 최신 뉴수
+	 * @date 2023.01.26
+	 * @author lgw
+	 * @return
+	 * @throws Exception
+	 */
+	public List<NewsVo> selectCurrentNewsList(NewsVo vo) throws Exception;
 
 }

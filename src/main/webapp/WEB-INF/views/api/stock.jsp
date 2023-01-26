@@ -7,8 +7,8 @@ var exchangeRateDataList = "${exchangeRateDataList}";
 		makeExchangeTable(exchangeRateDataList);	
 	});
 
+	
 function makeExchangeTable(exchangeRateDataList){
-
 
 		console.log(typeof exchangeRateDataList);
 
@@ -29,7 +29,39 @@ function makeExchangeTable(exchangeRateDataList){
 		$("#exchangeDataTable").append(makeExchangeTableHtml);
    }
 
+function apiAjax(){
+	$.ajax({
+		async       : false,
+		type        : "post",
+		url         : "${pageContext.request.contextPath}/api/stock",
+		contentType : "application/x-www-form-urlencoded;charset=UTF-8", 
+		dataType    : "json",
+		data 		: {  gameIdList : gameContentsId
+						,level3MenuId : $("#level3MenuId").val() },
+		success     : function(json) {
+			if(json.resultCode == "F") {
+				alert(json.resultMsg);
+				return;
+			}
+			else {
+				if(json.resultCode == "S"){
+					$("#paginationTag").html(json.paginationTag);
+					$("#totalCount").html("총 " + json.totalCount + " 건");
+					commonCallbackFunction(json.resultCode, json.resultMsg, json.resultData);
+					if( modalYn != null && modalYn != undefined ){
+						closePopup('D');
+					}						
+				}
+			}
 
+			$("#bbsId").val("");
+		},
+		error : function(data, status, error) {
+			location.href = "${pageContext.request.contextPath}/error"
+			} 
+		});			
+	}	
+}
 
 </script>
 <html>

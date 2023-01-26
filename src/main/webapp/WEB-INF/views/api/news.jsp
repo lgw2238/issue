@@ -1,6 +1,68 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" >
+
+	$(document).ready(function() {
+	 	/* 최신 뉴스 크롤링 데이터 */
+		getCurrentNewsList();
+ 
+	});
+
+
+	
+	function getCurrentNewsList(){					
+		$.ajax({
+				async       : true,
+				type        : "post",
+				url         : "${pageContext.request.contextPath}/api/news/newsListAjax",
+				contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+				data        : {},
+				dataType    : "json",
+				success     : function(json) {				
+					var resultData = json.resultData;
+					console.log("resultData:", resultData);
+					drawUITable(resultData);
+
+			},
+			error       : function(data, status, error) {
+				location.href = "${pageContext.request.contextPath}/error"
+			},complete : function(){
+				 
+			}
+		});
+	}
+
+
+	function drawUITable(resultData){
+		 var title ="";
+		 var titleLink = "";
+		 var titlePhoto = "";
+		 var htmlTag;
+		 
+		 if(resultData != null || resultData != ""){
+		     for(var i=0; i<resultData.length; i++){
+		    	 title = resultData[i].title;
+		    	 titleLink = resultData[i].titleLink;
+		    	 titlePhoto = resultData[i].titlePhotoLink;
+	
+		    	 /* 뉴스 리스트 테이블 TD 생성 */		    	
+	    		 htmlTag += "<tr>"
+	    	     htmlTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='eventImageInfo3'></td>";
+	    		 htmlTag += "<td><a href='"+titleLink+"'>"+title+"</a></td>"		
+	    		 htmlTag += "</tr>"
+			 }
+		 }
+			$("#currnetNewsDiv").html(htmlTag);
+
+
+	}
+
+
+
+	
+	
+</script>
 
 <html>
 	<head>
@@ -40,6 +102,7 @@
 								<div class="inner">
 									<header class="major">
 										<h2>최신 뉴스 리스트</h2>
+										<table id="currnetNewsDiv"></table>
 									</header>
 									<p></p>
 								</div>
@@ -48,18 +111,14 @@
 						<!-- Two -->
 							<section id="two" class="spotlights">
 								<section>
-									<a href="generic.html" class="image">
+	<!-- 								<a href="generic.html" class="image">
 										<img src="images/pic08.jpg" alt="" data-position="center center" />
-									</a>
+									</a> -->
 									<div class="content">
 										<div class="inner">
-											<header class="major">
-												<h3>Orci maecenas</h3>
-											</header>
-											<p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</p>
-											<ul class="actions">
+											<!-- <ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul>
+											</ul> -->
 										</div>
 									</div>
 								</section>
@@ -70,9 +129,9 @@
 									<div class="content">
 										<div class="inner">
 											<header class="major">
-												<h3>Rhoncus magna</h3>
+												<h3></h3>
 											</header>
-											<p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</p>
+											<p></p>
 											<ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
 											</ul>
@@ -86,9 +145,9 @@
 									<div class="content">
 										<div class="inner">
 											<header class="major">
-												<h3>Sed nunc ligula</h3>
+												<h3></h3>
 											</header>
-											<p>Nullam et orci eu lorem consequat tincidunt vivamus et sagittis magna sed nunc rhoncus condimentum sem. In efficitur ligula tate urna. Maecenas massa sed magna lacinia magna pellentesque lorem ipsum dolor. Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis tempus.</p>
+											<p></p>
 											<ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
 											</ul>
@@ -97,7 +156,7 @@
 								</section>
 							</section>
 
-						<!-- Three -->
+<!-- 						Three
 							<section id="three">
 								<div class="inner">
 									<header class="major">
@@ -109,7 +168,7 @@
 									</ul>
 								</div>
 							</section>
-
+ -->
 					</div>
 			<!-- Footer -->
 			<%@ include file="/WEB-INF/views/layout/footer.jsp" %>

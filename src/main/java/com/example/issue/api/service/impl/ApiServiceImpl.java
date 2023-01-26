@@ -1,6 +1,7 @@
 package com.example.issue.api.service.impl;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -19,6 +20,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +35,7 @@ import com.example.issue.api.vo.ApiResponse;
 import com.example.issue.api.vo.ApiVo;
 import com.example.issue.api.vo.StockVo;
 import com.example.issue.api.vo.ApiVo.Items;
+import com.example.issue.api.vo.NewsVo;
 import com.example.issue.api.vo.WeatherVo;
 import com.example.issue.api.vo.WeatherVo.CategoryType;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,6 +54,9 @@ public class ApiServiceImpl implements ApiService{
 	@Value("${STOCK.ExchangeRate.API.KEY}")
 	public String exchangeRateApiKey;
 		
+	@Value("${NEWS.CRAWLING.URL}")
+	public String crawlingUrl;
+	
 	public Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
@@ -61,28 +70,28 @@ public class ApiServiceImpl implements ApiService{
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Calendar c1 = Calendar.getInstance();
         String strToday = sdf.format(c1.getTime());
-        
+        logger.info("strToday:{}", strToday);
         /* 현재 시간 */
         LocalTime now = LocalTime.now();
         // 시, 분
         int hour = now.getHour()-1;
         int minute = now.getMinute();
-        String strTime = (Integer.toString(hour)+Integer.toString(minute));
-        
+        String strTime = (Integer.toString(hour)+"00");
+        logger.info("strTime:{}", strTime);
 		/* api 정보 담을 객체 생성  */
 		WeatherVo weather = new WeatherVo();
 		
 	  try {
 			  
 		    StringBuilder urlBuilder = new StringBuilder(BASE_URL);
-		    urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey);
+		    urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + serviceKey);
 		    urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("10", "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("dataType", "UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("base_date", "UTF-8") + "=" + URLEncoder.encode(strToday, "UTF-8"));
-		    urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode(strTime, "UTF-8"));
-		    urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode("76", "UTF-8"));
-		    urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode("122", "UTF-8"));
+		    urlBuilder.append("&" + URLEncoder.encode("base_time", "UTF-8") + "=" + URLEncoder.encode("0800", "UTF-8"));
+		    urlBuilder.append("&" + URLEncoder.encode("nx", "UTF-8") + "=" + URLEncoder.encode("55", "UTF-8"));
+		    urlBuilder.append("&" + URLEncoder.encode("ny", "UTF-8") + "=" + URLEncoder.encode("127", "UTF-8"));
 		    	    	   		    
 		    logger.info("Request url {}", urlBuilder.toString());
 		    		    
@@ -132,9 +141,8 @@ public class ApiServiceImpl implements ApiService{
 		    int i = 0;
 		    for (WeatherVo item : items.getItem()) {
 		    	  logger.info("count:"+i+"", i);
-		    	  methodWeather.setFcstValue(item.getFcstValue());
-		    	  methodWeather.setBaseDate(item.getBaseDate());
-		    	  methodWeather.setCategory(CategoryType.TMP);
+		    	  logger.info("item:"+item+"",item.toString());
+		    	  methodWeather.setCategory(item.getCategory());
 		      if (item.getCategory() == CategoryType.T3H) {	    	  
 
 		      } else if (item.getCategory() == CategoryType.REH) {
@@ -143,7 +151,9 @@ public class ApiServiceImpl implements ApiService{
 	
 		      } else if (item.getCategory() == CategoryType.PTY) {
 		    	  
-		      } else if (item.getCategory() == CategoryType.TMP) {
+		      } else if (item.getCategory() == CategoryType.TMP) { // 온도
+		    	  methodWeather.setFcstValue(item.getFcstValue());
+		      } else if (item.getCategory() == CategoryType.PCP) {
 		
 		      } else {
 		    	  
@@ -246,6 +256,42 @@ public class ApiServiceImpl implements ApiService{
 		  }  
 		
 		return exchangeRateDataList;
+	}
+	
+	
+	
+	/* 최신뉴스 크롤링 */
+	@Override
+	public List<NewsVo> selectCurrentNewsList(NewsVo vo) throws Exception {
+	        String incrawlingUrl = crawlingUrl;
+	        Connection conn = Jsoup.connect(incrawlingUrl);
+	        List<NewsVo> newsList = new ArrayList<NewsVo>();	
+	        
+	        try {
+	            Document document = conn.get();
+	            Elements imageUrlElements = document.getElementsByClass("photo");           
+	            Elements titleElements = document.select("dt.photo > a");
+	            Elements titleElements2 = document.select("dt.photo > a > img");
+	
+	            for (int j = 0; j < 10; j++) {
+	            	NewsVo news = new NewsVo();
+	            	final String title = titleElements2.get(j).absUrl("alt").replace("https://news.naver.com/main/", "");
+	            	final String titlelink = titleElements.get(j).absUrl("href");               
+	            	final String titlePhoto = titleElements2.get(j).absUrl("src");
+	            	
+	            	news.setTitle(title);     
+	            	news.setTitleLink(titlelink);
+	            	news.setTitlePhotoLink(titlePhoto);  
+	            	newsList.add(news);
+	            }
+	
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        
+	    logger.info("newsList:{}", newsList);
+        return newsList;
+        
 	}
 }
 

@@ -1,5 +1,6 @@
 package com.example.issue.api.controller;
 
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,26 +23,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.example.issue.api.service.ApiService;
 import com.example.issue.api.vo.ApiVo;
+import com.example.issue.api.vo.NewsVo;
 import com.example.issue.api.vo.StockVo;
 import com.example.issue.api.vo.WeatherVo;
 import com.example.issue.api.vo.WeatherVo.CategoryType;
+import com.example.issue.base.controller.BaseController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @RestController
 @RequestMapping("/api")
-public class ApiController {
+public class ApiController extends BaseController{
 
 	public Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Value("${WEATHER.API.DECODE.KEY}")
-	public String decodeWeatherApiKey;
-
-	@Value("${STOCK.API.DECODE.KEY}")
-	public String decodeStockApiKey;
-	
-	@Autowired
-	ApiService apiService;
 	/**
 	  * @description (1)날씨 API 화면으로 이동
 	  * @date 2023.01.16
@@ -61,7 +57,7 @@ public class ApiController {
 		
 		
 		List<WeatherVo> localWeather = apiService.selectWeatherData(vo);
-		float todayTemp = localWeather.get(0).getFcstValue();
+		String todayTemp = localWeather.get(0).getFcstValue();
 		logger.info("localWeather: {}", localWeather.get(0).getFcstValue());
 		
 		mav.addObject("localWeather", localWeather.get(0));
@@ -88,18 +84,37 @@ public class ApiController {
 			, StockVo vo) throws Exception {
 		ModelAndView mav = new ModelAndView("api/stock");
 		logger.info("stock Api start");
-			
-				
-		/* 환율 정보 조회 데이터  */
-		List<StockVo> exchangeRateDataList = apiService.selectExchangeRateData(vo);
-		logger.info("controller ::: exchangeRateDataList:{}", exchangeRateDataList);
-		logger.info("controller ::: exchangeRateDataList111111:{}", exchangeRateDataList.get(1));
-		logger.info("controller ::: exchangeRateDataList111111:{}", exchangeRateDataList.get(2));
-		logger.info("controller ::: exchangeRateDataList111111:{}", exchangeRateDataList.get(3));
-		mav.addObject("exchangeRateDataList", exchangeRateDataList);	
+
 		mav.addObject("viewName", "Stock API");	
 		return mav;
 		
+	}
+	
+	/**
+	  * @description (2-1)주식시세 화면정보 AJAX
+	  * @date 2023.01.16
+	  * @author lgw
+	  * @param req
+	  * @param res
+	  * @param mav
+	  * @return
+	  */
+	@RequestMapping(value="/stockAPI")
+	public void stockAPI(HttpServletRequest request, HttpServletResponse response
+			, @ModelAttribute("StockVo") StockVo vo, HttpSession session)throws Exception{
+		
+		  String resultMessage = "";
+	      PrintWriter out = response.getWriter();
+	      String pagingTag = "";
+	     // List<PromotionVo> promotionTotalList = promotionService.selectPromotionTotalList(promotionVo);
+	     // int totalCount = promotionService.selectPromotionTotalListCnt(promotionVo);
+	      
+			/*
+			 * if(promotionTotalList == null || promotionTotalList.isEmpty()) {
+			 * resultMessage = Keywords.NO_RESULT_DATA; }
+			 */
+		
+		//out.print(getResultModel(Keywords.SUCCESS, resultMessage, pagingTag, null, null));
 	}
 	
 	
@@ -146,4 +161,43 @@ public class ApiController {
 		return mav;
 		
 	}
+	
+	
+	
+	/**
+	  * @description (4) 최신 뉴스 조회 ajax
+	  * @date 2023.01.26
+	  * @author lgw
+	  * @param req
+	  * @param res
+	  * @param mav
+	  * @return
+	  */
+	@RequestMapping(value="/news/newsListAjax", method=RequestMethod.POST, produces="application/json; charset=UTF-8")
+	public void newsListAjax(Model model
+			, HttpServletResponse response
+			, HttpServletRequest request
+			, HttpSession session
+			, @ModelAttribute("NewsVo") NewsVo vo) throws Exception {
+		
+			
+		logger.info("newsListAjax");
+	       
+        String resultMessage = "";
+        String resultCode = "SUCCESS";
+        PrintWriter out = response.getWriter();
+        List<NewsVo> newsList = apiService.selectCurrentNewsList(vo);
+        int totalCount = newsList.size();
+        
+       
+        if(totalCount <= 0) {
+        	resultMessage = "데이터가 없습니다.";
+        	resultCode = "FAIL";
+        }
+       
+		out.print(getResultModel(resultCode, resultMessage, null, newsList, totalCount));
+		
+	}
+	
+	
 }
