@@ -38,6 +38,7 @@
 		 var title ="";
 		 var titleLink = "";
 		 var titlePhoto = "";
+		 var writer = "";
 		 var htmlTag;
 		 
 		 if(resultData != null || resultData != ""){
@@ -45,11 +46,12 @@
 		    	 title = resultData[i].title;
 		    	 titleLink = resultData[i].titleLink;
 		    	 titlePhoto = resultData[i].titlePhotoLink;
-	
+		    	 writer	= resultData[i].writer;
 		    	 /* 뉴스 리스트 테이블 TD 생성 */		    	
 	    		 htmlTag += "<tr>"
-	    	     htmlTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='eventImageInfo3'></td>";
+	    	     htmlTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='naverNewsImg'></td>";
 	    		 htmlTag += "<td><a href='"+titleLink+"'>"+title+"</a></td>"		
+	    		 htmlTag += "<td>"+writer+"</td>"	
 	    		 htmlTag += "</tr>"
 			 }
 		 }

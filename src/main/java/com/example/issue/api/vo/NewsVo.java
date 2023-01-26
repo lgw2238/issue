@@ -11,6 +11,7 @@ public class NewsVo {
 	private String title;
 	private String titlePhotoLink;
 	private String titleLink;
+	private String writer;
 	
 	
 	

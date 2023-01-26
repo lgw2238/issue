@@ -272,16 +272,17 @@ public class ApiServiceImpl implements ApiService{
 	            Elements imageUrlElements = document.getElementsByClass("photo");           
 	            Elements titleElements = document.select("dt.photo > a");
 	            Elements titleElements2 = document.select("dt.photo > a > img");
-	
+	        	Elements writingElements = document.getElementsByClass("writing");  
 	            for (int j = 0; j < 10; j++) {
 	            	NewsVo news = new NewsVo();
 	            	final String title = titleElements2.get(j).absUrl("alt").replace("https://news.naver.com/main/", "");
 	            	final String titlelink = titleElements.get(j).absUrl("href");               
 	            	final String titlePhoto = titleElements2.get(j).absUrl("src");
-	            	
+	            	final String writer = writingElements.get(j).text();
 	            	news.setTitle(title);     
 	            	news.setTitleLink(titlelink);
-	            	news.setTitlePhotoLink(titlePhoto);  
+	            	news.setTitlePhotoLink(titlePhoto);
+	            	news.setWriter(writer);
 	            	newsList.add(news);
 	            }
 	
