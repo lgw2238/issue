@@ -1,6 +1,61 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
 <!DOCTYPE html>	
+<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script type="text/javascript" >
+
+
+   function sendMail(){
+	  var sendName =  $("#name").val();
+	  var sendEmail =  $("#email").val();
+	  var sendMessage = $("#message").val();
+	  console.log("=================================");
+	  console.log("sendName:",sendName);
+	  console.log("sendEmail:", sendEmail);
+	  console.log("sendMessage:", sendMessage);
+	  console.log("=================================");
+			$.ajax({
+				async       : true,
+				type        : "post",
+				url         : "${pageContext.request.contextPath}/sys/mail/sendMail",
+				contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+				data        : { sendName:sendName, 
+								sendEmail:sendEmail,
+								sendMessage:sendMessage
+							   },
+				dataType    : "json",
+				success     : function(json) {			
+					alert("성공");
+	
+			},
+			error       : function(data, status, error) {
+				alert('error.status =' + status + '\nerror.data =' + data + '\nerror.error ='+ error);
+				location.href = "${pageContext.request.contextPath}/error"
+			},complete : function(){
+				alert("컴플리트");
+			}
+		});
+
+   }
+
+   
+    function init(){	   	
+		  $("#name").val("");
+		  $("#email").val("");
+		  $("#message").val("");
+	
+	}
+
+
+
+</script>
+<form id="mailForm" name="mailForm" method="post">
+	<input type="hidden" id="senderName" name="senderName" value="" />
+	<input type="hidden" id="sendEmail" name="sendEmail" value="" />
+	<input type="hidden" id="sendMessage" name="sendMessage" value="" />
+
+</form>
+
 				<section id="contact">
 						<div class="inner">
 							<section>
@@ -12,7 +67,7 @@
 										</div>
 										<div class="field half">
 											<label for="email">Email</label>
-											<input type="text" name="email" id="email" />
+											<input type="text" name="email" id="email" value="nihao3634@naver.com"/>
 										</div>
 										<div class="field">
 											<label for="message">Message</label>
@@ -20,8 +75,8 @@
 										</div>
 									</div>
 									<ul class="actions">
-										<li><input type="submit" value="Send Message" class="primary" /></li>
-										<li><input type="reset" value="Clear" /></li>
+										<li><input type="submit" onclick="javascript:sendMail();" value="Send Email" class="primary" /></li>
+										<li><input type="reset" onclick="javascript:init();" value="Clear" /></li>
 									</ul>
 								</form>
 							</section>

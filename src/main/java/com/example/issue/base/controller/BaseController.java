@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.issue.api.service.ApiService;
 import com.example.issue.comm.model.BoardVo;
 import com.example.issue.comm.service.BoardService;
+import com.example.issue.sys.mail.service.MailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BaseController {
@@ -30,6 +31,9 @@ public class BaseController {
 	
 	@Autowired
 	public ApiService apiService;
+	
+	@Autowired
+	public MailService mailService;
 	
 	public String getResultModel(String code, String msg, String paginationTag, Object data) throws Exception {
 		ObjectMapper mapper = new ObjectMapper();
