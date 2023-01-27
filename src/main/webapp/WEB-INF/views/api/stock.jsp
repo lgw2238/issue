@@ -39,22 +39,7 @@ function apiAjax(){
 		data 		: {  gameIdList : gameContentsId
 						,level3MenuId : $("#level3MenuId").val() },
 		success     : function(json) {
-			if(json.resultCode == "F") {
-				alert(json.resultMsg);
-				return;
-			}
-			else {
-				if(json.resultCode == "S"){
-					$("#paginationTag").html(json.paginationTag);
-					$("#totalCount").html("총 " + json.totalCount + " 건");
-					commonCallbackFunction(json.resultCode, json.resultMsg, json.resultData);
-					if( modalYn != null && modalYn != undefined ){
-						closePopup('D');
-					}						
-				}
-			}
 
-			$("#bbsId").val("");
 		},
 		error : function(data, status, error) {
 			location.href = "${pageContext.request.contextPath}/error"
@@ -110,25 +95,25 @@ function apiAjax(){
 						<!-- Two -->
 							<section id="two" class="spotlights">
 								<section>
-									<a href="generic.html" class="image">
+<!-- 									<a href="generic.html" class="image">
 										<img src="images/pic08.jpg" alt="" data-position="center center" />
-									</a>
+									</a> -->
 									<div class="content">
 										<div class="inner">
 											<header class="major">
 												<h3>글로벌 지수  시세</h3>
 											</header>
 											<p></p>
-											<ul class="actions">
+											<!-- <ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul>
+											</ul> -->
 										</div>
 									</div>
 								</section>
 								<section>
-									<a href="generic.html" class="image">
+<!-- 									<a href="generic.html" class="image">
 										<img src="images/pic09.jpg" alt="" data-position="top center" />
-									</a>
+									</a> -->
 									<div class="content">
 										<div class="inner">
 											<header class="major">
@@ -163,18 +148,18 @@ function apiAjax(){
 									</div>
 								</section>
 								<section>
-									<a href="generic.html" class="image">
+<!-- 									<a href="generic.html" class="image">
 										<img src="images/pic10.jpg" alt="" data-position="25% 25%" />
-									</a>
+									</a> -->
 									<div class="content">
 										<div class="inner">
 											<header class="major">
 												<h3>원자재 시세</h3>
 											</header>
 											<p></p>
-											<ul class="actions">
+											<!-- <ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul>
+											</ul> -->
 										</div>
 									</div>
 								</section>
@@ -184,12 +169,12 @@ function apiAjax(){
 							<section id="three">
 								<div class="inner">
 									<header class="major">
-										<h2>Massa libero</h2>
+										<h2></h2>
 									</header>
 									<p></p>
-									<ul class="actions">
+									<!-- <ul class="actions">
 										<li><a href="generic.html" class="button next">Get Started</a></li>
-									</ul>
+									</ul> -->
 								</div>
 							</section>
 

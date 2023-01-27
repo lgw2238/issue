@@ -91,6 +91,7 @@
 								<h1>${viewName}</h1>
 							</header>
 							<div class="content">
+								<i class="fa-solid fa-newspaper"></i>
 								<p>최신 뉴스를 보고 시사지식을 늘려봅시다. </p>
 							</div>
 						</div>

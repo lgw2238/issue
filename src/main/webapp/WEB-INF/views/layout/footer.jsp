@@ -127,6 +127,7 @@
 			</div>
 
 		<!-- Scripts -->
+			<script src="https://kit.fontawesome.com/17b5a91918.js" crossorigin="anonymous"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/jquery.scrolly.min.js"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/jquery.scrollex.min.js"></script>

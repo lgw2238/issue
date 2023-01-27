@@ -294,6 +294,12 @@ public class ApiServiceImpl implements ApiService{
         return newsList;
         
 	}
+
+	@Override
+	public List<WeatherVo> selectWeatherDataList(WeatherVo vo) throws Exception {
+	
+		return null;
+	}
 }
 
 

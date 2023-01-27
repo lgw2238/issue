@@ -68,6 +68,42 @@ public class ApiController extends BaseController{
 
 	
 	/**
+	  * @description (1-1) 당일 날씨 정보 ajax
+	  * @date 2023.01.27
+	  * @author lgw
+	  * @param req
+	  * @param res
+	  * @param mav
+	  * @return
+	  */
+	@RequestMapping(value="/weather/weatherListAjax", method=RequestMethod.POST, produces="application/json; charset=UTF-8")
+	public void weatherListAjax(Model model
+			, HttpServletResponse response
+			, HttpServletRequest request
+			, HttpSession session
+			, @ModelAttribute("WeatherVo") WeatherVo vo) throws Exception {
+		
+			
+		logger.info("weatherListAjax");
+	       
+        String resultMessage = "";
+        String resultCode = "SUCCESS";
+        PrintWriter out = response.getWriter();
+       // List<NewsVo> weatherList = apiService.selectWeatherDataList(vo);
+        int totalCount = 0; //weatherList.size();
+        
+       
+        if(totalCount <= 0) {
+        	resultMessage = "데이터가 없습니다.";
+        	resultCode = "FAIL";
+        }
+       
+		out.print(getResultModel(resultCode, resultMessage, null, null, totalCount));
+		
+	}
+	
+	
+	/**
 	  * @description (2)주식시세 API 화면으로 이동
 	  * @date 2023.01.16
 	  * @author lgw
@@ -99,22 +135,17 @@ public class ApiController extends BaseController{
 	  * @param mav
 	  * @return
 	  */
-	@RequestMapping(value="/stockAPI")
-	public void stockAPI(HttpServletRequest request, HttpServletResponse response
+	@RequestMapping(value="/stockListAjax")
+	public void stockListAjax(HttpServletRequest request, HttpServletResponse response
 			, @ModelAttribute("StockVo") StockVo vo, HttpSession session)throws Exception{
 		
 		  String resultMessage = "";
+		  String resultCode ="";
 	      PrintWriter out = response.getWriter();
 	      String pagingTag = "";
-	     // List<PromotionVo> promotionTotalList = promotionService.selectPromotionTotalList(promotionVo);
-	     // int totalCount = promotionService.selectPromotionTotalListCnt(promotionVo);
-	      
-			/*
-			 * if(promotionTotalList == null || promotionTotalList.isEmpty()) {
-			 * resultMessage = Keywords.NO_RESULT_DATA; }
-			 */
+
 		
-		//out.print(getResultModel(Keywords.SUCCESS, resultMessage, pagingTag, null, null));
+		out.print(getResultModel(resultCode, resultMessage, null, null, 0));
 	}
 	
 	

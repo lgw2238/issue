@@ -27,7 +27,7 @@ public class WebController {
 	}
 	
 	/**
-	  * @description (1)날씨 API 화면으로 이동
+	  * @description (1) about Me 이동
 	  * @date 2023.01.16
 	  * @author lgw
 	  * @param req

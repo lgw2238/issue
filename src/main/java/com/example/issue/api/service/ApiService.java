@@ -20,13 +20,23 @@ public interface ApiService {
 
 	public String selectApiData(ApiVo vo) throws Exception;
 	/**
-	 * @description API 목록 조회(1) - 날씨정보
+	 * @description API 목록 조회(1) - 날씨정보(BETA)
 	 * @date 2023.01.16
 	 * @author lgw
 	 * @return
 	 * @throws Exception
 	 */
 	public List<WeatherVo> selectWeatherData(WeatherVo vo) throws Exception;
+	
+	
+	/**
+	 * @description API 목록 조회(1) - 날씨정보(NEW)
+	 * @date 2023.01.16
+	 * @author lgw
+	 * @return
+	 * @throws Exception
+	 */
+	public List<WeatherVo> selectWeatherDataList(WeatherVo vo) throws Exception;
 	
 	/**
 	 * @description API 목록 조회(2) - 환율 시세
@@ -38,7 +48,7 @@ public interface ApiService {
 	public List<StockVo> selectExchangeRateData(StockVo vo) throws Exception;
 
 	/**
-	 * @description API 목록 조회(4) - 최신 뉴수
+	 * @description API 목록 조회(4) - 최신 뉴스
 	 * @date 2023.01.26
 	 * @author lgw
 	 * @return
