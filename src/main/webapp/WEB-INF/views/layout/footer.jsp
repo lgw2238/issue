@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
 <!DOCTYPE html>	
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/favicon.ico">
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" >
 
@@ -15,7 +16,7 @@
 	  console.log("sendMessage:", sendMessage);
 	  console.log("=================================");
 			$.ajax({
-				async       : true,
+				async       : false,
 				type        : "post",
 				url         : "${pageContext.request.contextPath}/sys/mail/sendMail",
 				contentType : "application/x-www-form-urlencoded;charset=UTF-8",
@@ -25,14 +26,14 @@
 							   },
 				dataType    : "json",
 				success     : function(json) {			
-					alert("성공");
+					alert("메일 전송이 완료 되었습니다.");
 	
 			},
 			error       : function(data, status, error) {
 				alert('error.status =' + status + '\nerror.data =' + data + '\nerror.error ='+ error);
 				location.href = "${pageContext.request.contextPath}/error"
 			},complete : function(){
-				alert("컴플리트");
+				
 			}
 		});
 
