@@ -39,7 +39,8 @@
 		 var titleLink = "";
 		 var titlePhoto = "";
 		 var writer = "";
-		 var htmlTag;
+		 var economicTag;
+		 var enterTag;
 		 
 		 if(resultData != null || resultData != ""){
 		     for(var i=0; i<resultData.length; i++){
@@ -47,16 +48,25 @@
 		    	 titleLink = resultData[i].titleLink;
 		    	 titlePhoto = resultData[i].titlePhotoLink;
 		    	 writer	= resultData[i].writer;
-		    	 /* 뉴스 리스트 테이블 TD 생성 */		    	
-	    		 htmlTag += "<tr>"
-	    	     htmlTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='naverNewsImg'></td>";
-	    		 htmlTag += "<td><a href='"+titleLink+"'>"+title+"</a></td>"		
-	    		 htmlTag += "<td>"+writer+"</td>"	
-	    		 htmlTag += "</tr>"
+		    	 genre = resultData[i].genre;
+		    	 /* 뉴스 리스트 테이블 TD 생성 */	
+		    	 if(genre == "economic"){			    	    	
+		    		 economicTag += "<tr>"
+		    	     economicTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='naverEconomicImg'></td>";
+		    	     economicTag += "<td><a href='"+titleLink+"'>"+title+"</a></td>"		
+		    	     economicTag += "<td>"+writer+"</td>"	
+		    	     economicTag += "</tr>"
+		    	 }else if(genre == "enter"){
+					 enterTag += "<tr>"
+					 enterTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='naverEnterImg'></td>";
+					 enterTag += "<td><a href='"+titleLink+"'>"+title+"</a></td>"								 
+				     enterTag += "</tr>"
+			     }	
 			 }
 		 }
-			$("#currnetNewsDiv").html(htmlTag);
-
+		 
+			$("#currnetEconomicNewsDiv").html(economicTag);
+			$("#currnetEnterNewsDiv").html(enterTag);
 
 	}
 
@@ -104,8 +114,8 @@
 							<section id="one">
 								<div class="inner">
 									<header class="major">
-										<h2>최신 뉴스 리스트</h2>
-										<table id="currnetNewsDiv"></table>
+										<h2>최신 경제 뉴스 리스트</h2>
+										<table id="currnetEconomicNewsDiv"></table>
 									</header>
 									<p></p>
 								</div>
@@ -114,9 +124,10 @@
 						<!-- Two -->
 							<section id="two" class="spotlights">
 								<section>
-	<!-- 								<a href="generic.html" class="image">
-										<img src="images/pic08.jpg" alt="" data-position="center center" />
-									</a> -->
+									<header class="major">
+										<h2>최신 연예 뉴스 리스트</h2>
+										<table id="currnetEnterNewsDiv"></table>
+									</header>
 									<div class="content">
 										<div class="inner">
 											<!-- <ul class="actions">
@@ -135,9 +146,9 @@
 												<h3></h3>
 											</header>
 											<p></p>
-											<ul class="actions">
+											<!-- <ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul>
+											</ul> -->
 										</div>
 									</div>
 								</section>
@@ -151,9 +162,9 @@
 												<h3></h3>
 											</header>
 											<p></p>
-											<ul class="actions">
+											<!-- <ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul>
+											</ul> -->
 										</div>
 									</div>
 								</section>
