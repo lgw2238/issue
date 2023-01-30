@@ -57,6 +57,10 @@ public class ApiServiceImpl implements ApiService{
 	@Value("${NEWS.CRAWLING.URL}")
 	public String crawlingUrl;
 	
+	@Value("${NEWS.ENTER.URL}")
+	public String crawlingEnterUrl;
+	
+
 	public Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Override
@@ -263,29 +267,75 @@ public class ApiServiceImpl implements ApiService{
 	/* 최신뉴스 크롤링 */
 	@Override
 	public List<NewsVo> selectCurrentNewsList(NewsVo vo) throws Exception {
-	        String incrawlingUrl = crawlingUrl;
-	        Connection conn = Jsoup.connect(incrawlingUrl);
-	        List<NewsVo> newsList = new ArrayList<NewsVo>();	
+//			List<sda> list = ??sercei.selectCurrentNewsList(Txconts.crawlingUrl,TXC.crawlingEnterUrl,'asdasd');
+			
+			
+	        String incrawlingUrl = crawlingUrl;        
+	        String entercrawlingUrl = crawlingEnterUrl;
 	        
+	        Connection conn = Jsoup.connect(incrawlingUrl);
+	        Connection connEnter = Jsoup.connect(entercrawlingUrl);
+	        List<NewsVo> newsList = new ArrayList<NewsVo>();	
+	        logger.info("conn:{}", conn);
+	        logger.info("connEnter:{}", connEnter);
+	        Integer validationInt = 0;
+	        loop:
 	        try {
-	            Document document = conn.get();
-	            Elements imageUrlElements = document.getElementsByClass("photo");           
-	            Elements titleElements = document.select("dt.photo > a");
-	            Elements titleElements2 = document.select("dt.photo > a > img");
-	        	Elements writingElements = document.getElementsByClass("writing");  
-	            for (int j = 0; j < 10; j++) {
-	            	NewsVo news = new NewsVo();
-	            	final String title = titleElements2.get(j).absUrl("alt").replace("https://news.naver.com/main/", "");
-	            	final String titlelink = titleElements.get(j).absUrl("href");               
-	            	final String titlePhoto = titleElements2.get(j).absUrl("src");
-	            	final String writer = writingElements.get(j).text();
-	            	news.setTitle(title);     
-	            	news.setTitleLink(titlelink);
-	            	news.setTitlePhotoLink(titlePhoto);
-	            	news.setWriter(writer);
-	            	newsList.add(news);
-	            }
-	
+	        	// 
+	        	for (int cnt = 0; cnt< 2; cnt++) {
+	        		if(validationInt == 0) {
+	        			Document document = conn.get();
+	        			Elements imageUrlElements = document.getElementsByClass("photo");           
+	        			Elements titleElements = document.select("dt.photo > a");
+	        			Elements titleElements2 = document.select("dt.photo > a > img");
+	        			Elements writingElements = document.getElementsByClass("writing");  
+	        			/* 최신 경제 뉴스 리스트업 */
+	        			for (int j = 0; j < 10; j++) {
+	        				NewsVo news = new NewsVo();
+	        				final String title = titleElements2.get(j).absUrl("alt").replace("https://news.naver.com/main/", "");
+	        				final String titlelink = titleElements.get(j).absUrl("href");               
+	        				final String titlePhoto = titleElements2.get(j).absUrl("src");
+	        				final String writer = writingElements.get(j).text();
+	        				final String genre = "economic";
+	        				news.setTitle(title);     
+	        				news.setTitleLink(titlelink);
+	        				news.setTitlePhotoLink(titlePhoto);
+	        				news.setWriter(writer);
+	        				news.setGenre(genre);
+	        				newsList.add(news);
+	        				if ( j == 9) { /* 마지막 for문 에서  validationInt + 1 -> 뉴스 URL 변환 */
+	        					validationInt += 1;
+	        					logger.info("validationInt endpoint:{}", validationInt);
+	        					break;
+	        					
+	        				}
+	        			}
+	        		}else if(validationInt.equals(1)){
+	        			/* change 연예뉴스 리스트업 */	       
+	        			logger.info("change 연예뉴스 리스트업:{}", validationInt);
+	        			Document documentEnter = connEnter.get();
+	        			Elements enterUrlElements = documentEnter.getElementsByClass("lst_item _page_no_1");   
+	        			Elements titleUrlElements = documentEnter.getElementsByClass("title_area");   
+	        			Elements titleElements2 = documentEnter.select("div.title_area > a.title");
+	        			Elements titleElements3 = documentEnter.select("a.thumb_area > img");
+	        			/* 연예 뉴스 리스트 업  */
+	        			for (int i=0; i< 6; i++) {
+	        				NewsVo enterNews = new NewsVo();
+	        				final String enterTitle = titleElements2.get(i).text();
+	        				final String enterImgLink = titleElements3.get(i).absUrl("src");
+	        				final String enterTag = titleElements2.get(i).absUrl("href");
+	        				final String genre = "enter";
+	        				enterNews.setTitle(enterTitle); 
+	        				enterNews.setTitleLink(enterTag);
+	        				enterNews.setTitlePhotoLink(enterImgLink);
+	        				enterNews.setWriter(null);
+	        				enterNews.setGenre(genre);
+	        				newsList.add(enterNews);
+	        			}
+	        		}else {
+	        			
+	        		}
+	        	}
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }

@@ -13,6 +13,8 @@ public class NewsVo {
 	private String titleLink;
 	private String writer;
 	
+	/* 뉴스 구분 parameter */
+	private String genre;
 	
 	
 }
