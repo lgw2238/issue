@@ -58,7 +58,7 @@
 		    	     economicTag += "</tr>"
 		    	 }else if(genre == "enter"){
 					 enterTag += "<tr>"
-					 enterTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='naverEnterImg'></td>";
+					 enterTag += "<td><img alt='" + titleLink + "' src='"+ titlePhoto +"'  id='naverEnterImg' style='width:106px; height:72px;'></td>";
 					 enterTag += "<td><a href='"+titleLink+"'>"+title+"</a></td>"								 
 				     enterTag += "</tr>"
 			     }	
@@ -122,24 +122,17 @@
 							</section>
 
 						<!-- Two -->
-							<section id="two" class="spotlights">
-								<section>
-									<header class="major">
-										<h2>최신 연예 뉴스 리스트</h2>
-										<table id="currnetEnterNewsDiv"></table>
-									</header>
-									<div class="content">
-										<div class="inner">
-											<!-- <ul class="actions">
-												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul> -->
-										</div>
+							<section id="two" >
+								<div class="inner">									
+<!-- 								<section> -->								
+										<header class="major">
+											<h2>최신 연예 뉴스 리스트</h2>		
+												<table id="currnetEnterNewsDiv"></table>			
+										</header>
+									<div class="content">																	
 									</div>
-								</section>
+<!-- 								</section> -->
 								<section>
-									<a href="generic.html" class="image">
-										<img src="images/pic09.jpg" alt="" data-position="top center" />
-									</a>
 									<div class="content">
 										<div class="inner">
 											<header class="major">

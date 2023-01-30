@@ -25,6 +25,7 @@ import com.example.issue.api.service.ApiService;
 import com.example.issue.api.vo.ApiVo;
 import com.example.issue.api.vo.NewsVo;
 import com.example.issue.api.vo.StockVo;
+import com.example.issue.api.vo.TouristVo;
 import com.example.issue.api.vo.WeatherVo;
 import com.example.issue.api.vo.WeatherVo.CategoryType;
 import com.example.issue.base.controller.BaseController;
@@ -166,9 +167,35 @@ public class ApiController extends BaseController{
 		ModelAndView mav = new ModelAndView("api/tourist");
 		logger.info("Tourist Api start");
 			
+		
+		
+		
 		mav.addObject("viewName", "Tourist API");	
 		return mav;
 		
+	}
+	
+	
+	/**
+	  * @description (3-1)관광지 정보 리스트업 AJAX
+	  * @date 2023.01.30
+	  * @author lgw
+	  * @param req
+	  * @param res
+	  * @param mav
+	  * @return
+	  */
+	@RequestMapping(value="tourist/touristDataAjax" , method=RequestMethod.POST, produces="application/json; charset=UTF-8")
+	public void touristDataAjax(HttpServletRequest request, HttpServletResponse response
+			, @ModelAttribute("TouristVo") TouristVo vo, HttpSession session)throws Exception{
+		
+		  String resultMessage = "200";
+		  String resultCode = "SUCCESS";
+	      PrintWriter out = response.getWriter();
+	      List<TouristVo> tourList = apiService.selectTouristDataList(vo);
+	      int totalCount = tourList.size();
+	      
+		out.print(getResultModel(resultCode, resultMessage, null, tourList, totalCount));
 	}
 	
 	/**

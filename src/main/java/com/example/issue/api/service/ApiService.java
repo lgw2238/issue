@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.issue.api.vo.ApiVo;
 import com.example.issue.api.vo.NewsVo;
 import com.example.issue.api.vo.StockVo;
+import com.example.issue.api.vo.TouristVo;
 import com.example.issue.api.vo.WeatherVo;
 import com.example.issue.comm.model.BoardVo;
 import com.example.issue.comm.repository.BoardRepository;
@@ -48,6 +49,15 @@ public interface ApiService {
 	public List<StockVo> selectExchangeRateData(StockVo vo) throws Exception;
 
 	/**
+	 * @description API 목록 조회(3) - 관광지 데이터 조회
+	 * @date 2023.01.30
+	 * @author lgw
+	 * @return
+	 * @throws Exception
+	 */
+	public List<TouristVo> selectTouristDataList(TouristVo vo) throws Exception;
+	
+	/**
 	 * @description API 목록 조회(4) - 최신 뉴스
 	 * @date 2023.01.26
 	 * @author lgw
@@ -55,5 +65,8 @@ public interface ApiService {
 	 * @throws Exception
 	 */
 	public List<NewsVo> selectCurrentNewsList(NewsVo vo) throws Exception;
-
+	
+	
+	
+	
 }

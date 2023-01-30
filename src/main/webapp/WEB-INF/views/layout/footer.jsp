@@ -84,6 +84,13 @@
 							<section class="split">
 								<section>
 									<div class="contact-method">
+										<span class="icon brands alt fa-github"></span>
+										<h3>Git</h3>
+										<a href="https://github.com/lgw2238" class="">https://github.com/lgw2238</a>
+									</div>
+								</section>
+								<section>
+									<div class="contact-method">
 										<span class="icon solid alt fa-envelope"></span>
 										<h3>Email</h3>
 										<a href="https://www.google.co.kr/">lgw2236@gmail.com</a>
@@ -130,8 +137,8 @@
 			<script src="https://kit.fontawesome.com/17b5a91918.js" crossorigin="anonymous"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/jquery.scrolly.min.js"></script>
-			<script src="${pageContext.request.contextPath}/assets/js/jquery.scrollex.min.js"></script>
-			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.scrollex.min.js"></script> 
+			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script> 
 			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
-			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script> 
 			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
