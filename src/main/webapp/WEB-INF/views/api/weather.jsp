@@ -173,8 +173,7 @@ function divInit(){
 												<option value="Tokyo">Tokyo</option>
 												<option value="Beijing">Beijing</option>
 												<option value="Washington">Washington</option>
-												<option value="San Francisco">San Francisco</option>
-												
+												<option value="San Francisco">San Francisco</option>												
 											</select>								
 										</span>
 										<td>

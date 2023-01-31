@@ -97,7 +97,7 @@ public class tourist {
 		        	String validationTelNum = (String) jobj.get("tel");
 		        	 if(jobj != null && !validationTelNum.equals("")) {			        		
 		        		 tourist.setNum(i);
-		        		 tourist.setAreacode((String) jobj.get("areacode"));
+		        		 tourist.setAreaCode((String) jobj.get("areacode"));
 		        		 tourist.setStandardAddr((String) jobj.get("addr1"));
 		        		 tourist.setDetailAddr((String) jobj.get("addr2"));		        		 
 		        		 tourist.setFirstimage((String) jobj.get("firstimage2"));

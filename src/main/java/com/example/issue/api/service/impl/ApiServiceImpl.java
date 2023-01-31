@@ -361,19 +361,12 @@ public class ApiServiceImpl implements ApiService{
 		 String BASE_URL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
 		 String serviceKey = tourApiKey; 
 		 List<TouristVo> touristDataList = new ArrayList<TouristVo>();	
-		 
-	 	/* 오늘 날짜 */
-	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        Calendar c1 = Calendar.getInstance();
-        String strToday = sdf.format(c1.getTime());
-        
-        /* 현재 시간 */
-        LocalTime now = LocalTime.now();
-        // 시, 분
-        int hour = now.getHour();
-        int minute = now.getMinute();
-        String strTime = (Integer.toString(hour)+Integer.toString(minute));	        
-	        
+		 String areaCodeValue = vo.getAreaCode();
+	     
+		 logger.info("지역코드 명:{}", areaCodeValue);
+		 if(areaCodeValue == null || areaCodeValue.equals("")) {
+			 areaCodeValue = "1";
+		 }
 		try {
 			  
 		    StringBuilder urlBuilder = new StringBuilder(BASE_URL);
@@ -382,10 +375,15 @@ public class ApiServiceImpl implements ApiService{
 			urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("MobileOS", "UTF-8") + "=" + URLEncoder.encode("ETC", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("MobileApp", "UTF-8") + "=" + URLEncoder.encode("AppTest", "UTF-8"));
+			urlBuilder.append("&" + URLEncoder.encode("contentTypeId", "UTF-8") + "=" + URLEncoder.encode("12", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("listYN", "UTF-8") + "=" + URLEncoder.encode("Y", "UTF-8"));
 			urlBuilder.append("&" + URLEncoder.encode("arrange", "UTF-8") + "=" + URLEncoder.encode("O", "UTF-8"));
-			urlBuilder.append("&" + URLEncoder.encode("areaCode", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+			urlBuilder.append("&" + URLEncoder.encode("areaCode", "UTF-8") + "=" + URLEncoder.encode(areaCodeValue, "UTF-8"));
+//			urlBuilder.append("&" + URLEncoder.encode("sigunguCode", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+//			urlBuilder.append("&" + URLEncoder.encode("cat1", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
+//			urlBuilder.append("&" + URLEncoder.encode("cat2", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
+//			urlBuilder.append("&" + URLEncoder.encode("cat3", "UTF-8") + "=" + URLEncoder.encode("", "UTF-8"));
 	    	    	   		    
 		    System.out.println(urlBuilder.toString());
 		    		    
@@ -424,10 +422,10 @@ public class ApiServiceImpl implements ApiService{
 		        	JSONObject jobj = (JSONObject) jsonArray.get(i);	
 		        	 if(jobj != null) {		
 		        		 tourist.setNum(i);
-		        		 tourist.setAreacode((String) jobj.get("areacode"));
+		        		 tourist.setAreaCode((String) jobj.get("areacode"));
 		        		 tourist.setStandardAddr((String) jobj.get("addr1"));
 		        		 tourist.setDetailAddr((String) jobj.get("addr2"));		        		 
-		        		 tourist.setFirstimage((String) jobj.get("firstimage2"));
+		        		 tourist.setFirstimage((String) jobj.get("firstimage"));
 		        		 tourist.setSigungucode((String) jobj.get("sigungucode"));
 		        		 tourist.setTitle((String) jobj.get("title"));
 		        		 tourist.setZipcode((String) jobj.get("zipcode"));
@@ -436,14 +434,81 @@ public class ApiServiceImpl implements ApiService{
 		        	 }else {
 		        		 
 		        	 }		   		
-		        	 System.out.println(i);		        	       	 
+		        	        	       	 
 		        }		        
-		       System.out.println(touristDataList);
+		        logger.info("touristDataList:{}", touristDataList);
 		    }
 		  } catch (Exception e) {
 		    e.printStackTrace();
 		  }  
 		return touristDataList;
+	}
+
+	@Override
+	public List<TouristVo> selectAreaCodeList() throws Exception {
+		 String BASE_URL = "http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode";
+		 String serviceKey = tourApiKey; 
+		 List<TouristVo> areaCodeList = new ArrayList<TouristVo>();	
+			try {
+				  
+			    StringBuilder urlBuilder = new StringBuilder(BASE_URL);
+			    urlBuilder.append("?" + URLEncoder.encode("ServiceKey", "UTF-8") + "=" + serviceKey);
+				urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("20", "UTF-8"));
+				urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8"));
+				urlBuilder.append("&" + URLEncoder.encode("MobileOS", "UTF-8") + "=" + URLEncoder.encode("ETC", "UTF-8"));
+				urlBuilder.append("&" + URLEncoder.encode("MobileApp", "UTF-8") + "=" + URLEncoder.encode("AppTest", "UTF-8"));
+				urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8"));
+			    System.out.println(urlBuilder.toString());
+			    		    
+			    URL url = new URL(urlBuilder.toString());
+			    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			    conn.setRequestMethod("GET");
+			    conn.setRequestProperty("Content-type", "application/json");
+			    System.out.println("Response code: " + conn.getResponseCode());
+			    String data;
+			    if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+			        StringBuilder sb = new StringBuilder();
+			
+			        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			        in.lines().forEach(line -> {
+			          sb.append(line);
+			        });
+			
+			        in.close();
+			        conn.disconnect();
+			        
+			        data = sb.toString();
+
+			        /* API 응답값이 json array 형식 -> object 변환 */
+			        JSONParser jsonParser = new JSONParser();
+			        JSONObject jsonObject = (JSONObject)jsonParser.parse(data);
+			        JSONObject response = (JSONObject)jsonObject.get("response");
+			        JSONObject body = (JSONObject)response.get("body");
+			        JSONObject item = (JSONObject)body.get("items");		        
+			        JSONArray jsonArray = (JSONArray)item.get("item");
+
+			        logger.info("jsonArray:{}", jsonArray);
+			        for(int i = 0; i < jsonArray.size(); i++) {
+			        	/* api 정보 담을 객체 생성  */
+				        TouristVo areaData = new TouristVo();	
+				        
+			        	JSONObject jobj = (JSONObject) jsonArray.get(i);	
+			        	 if(jobj != null) {		
+			        		 areaData.setNum(i);
+			        		 areaData.setAreaCode((String) jobj.get("code"));
+			        		 areaData.setAreaNm((String) jobj.get("name"));
+			        		 areaCodeList.add(areaData);
+			        	 }else {
+			        		 
+			        	 }		   		    	       	 
+			        }		        
+			       logger.info("areaCodeList:{}", areaCodeList);
+			    }
+			  } catch (Exception e) {
+			    e.printStackTrace();
+			  }  
+			return areaCodeList;
+
 	}
 	
 }

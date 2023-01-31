@@ -11,7 +11,6 @@ public class TouristVo {
 	private String resultMsg;
 	private String standardAddr;
 	private String detailAddr;
-	private String areacode;
 	private String contenttypeId;
 	private String firstimage;
 	private String firstimage2;
@@ -19,5 +18,9 @@ public class TouristVo {
 	private String title;
 	private String zipcode;
 	private String sigungucode;
+	
+	/* 지역 코드 분류 */
+	private String areaCode;
+	private String areaNm;
 	
 }

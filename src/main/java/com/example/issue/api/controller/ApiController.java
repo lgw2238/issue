@@ -166,10 +166,11 @@ public class ApiController extends BaseController{
 			, HttpSession session) throws Exception {
 		ModelAndView mav = new ModelAndView("api/tourist");
 		logger.info("Tourist Api start");
-			
-		
-		
-		
+				
+		List<TouristVo> areaCodeList = apiService.selectAreaCodeList();
+		logger.info("controller:::areaCodeList:{}", areaCodeList);	
+
+		mav.addObject("areaCodeList", areaCodeList);	
 		mav.addObject("viewName", "Tourist API");	
 		return mav;
 		
