@@ -1,2 +1,2 @@
 # issue
-api peristalsis project
+api inter·work project & portfolio.
