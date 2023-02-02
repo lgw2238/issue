@@ -42,7 +42,7 @@
 							<img src="${pageContext.request.contextPath}/images/space.jpg" alt="" />
 						</span>
 							<header class="major">
-								<h1>Hi!, start api work</h1>
+								<h1>Hi!, Welcome Snack Issue</h1>
 							</header>
 							<div class="content">
 								<p>What kind of issues are there today?</p>

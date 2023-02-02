@@ -108,8 +108,8 @@
 										<span class="icon solid alt fa-home"></span>
 										<h3>Address</h3>
 										<span>서울특별시 관악구 미성동<br />
-										Nashville, TN 00000<br />
-										United States of America</span>
+										<br />
+										</span>
 									</div>
 								</section>
 							</section>

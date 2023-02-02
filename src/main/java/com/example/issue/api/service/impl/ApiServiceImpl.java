@@ -510,6 +510,52 @@ public class ApiServiceImpl implements ApiService{
 			return areaCodeList;
 
 	}
+
+	@Override
+	public List<StockVo> selectStockDataList(StockVo vo) throws Exception {
+        final String kospiUrl = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=0";
+        final String kosdaqUrl = "https://finance.naver.com/sise/sise_market_sum.naver?sosok=1";
+        
+        String connectUrl = "";
+        logger.info("요청 주식데이터 타입:{}",vo.getStockType());
+        
+        if("KOSPI".equals(vo.getStockType())) {
+        	connectUrl = kospiUrl;
+        }else if("KOSDAQ".equals(vo.getStockType())) {
+        	connectUrl = kosdaqUrl;
+        }else {
+        	connectUrl = kospiUrl;
+        }
+        
+        Connection conn = Jsoup.connect(connectUrl);
+        List<StockVo> stockDataList = new ArrayList<StockVo>();	
+        try {
+            Document document = conn.get();
+            Elements stockTitleElements = document.getElementsByClass("tltle");   
+            Elements stockBodyElements = document.getElementsByAttributeValue("onmouseover", "mouseOver(this)");
+            Elements stockBodyTrElements = stockBodyElements.select("tr");
+            
+            for (int i=0; i<20; i++) {
+            	StockVo stockVo = new StockVo();
+            	final String stockTitle = stockTitleElements.get(i).text();
+            	final String sotckTr = stockBodyTrElements.get(i).text().replace(" ", "|");
+            	
+            	stockVo.setStockTitle(stockTitle);
+            	stockVo.setStockBody(sotckTr);
+            	stockVo.setStockType(vo.getStockType());
+            	
+            	logger.info("stockTitle:{}",stockTitle);
+            	logger.info("sotckTr:{}",sotckTr);   
+            	logger.info("stockType:{}",vo.getStockType()); 
+            	
+            	stockDataList.add(stockVo);
+            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		return stockDataList;
+	}
 	
 }
 

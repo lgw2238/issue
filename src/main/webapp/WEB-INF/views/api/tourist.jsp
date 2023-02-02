@@ -123,6 +123,7 @@ $(document).ready(function() {
 								<h1>${viewName}</h1>
 							</header>
 							<div class="content">
+							    <i class="fa-sharp fa-solid fa-location-dot"></i>
 								<p>최적의 관광 명소를 찾아드립니다. </p>
 							</div>
 						</div>

@@ -19,5 +19,10 @@ public class StockVo {
 	/* 중간 가격 */
 	private String standatdTax;
 	
-	
+	/* crawling stock title */
+	private String stockTitle;
+	/* crawling response body data */
+	private String stockBody;
+	/* crawling request parameter */
+	private String stockType;
 }

@@ -49,6 +49,14 @@ public interface ApiService {
 	public List<StockVo> selectExchangeRateData(StockVo vo) throws Exception;
 
 	
+	/**
+	 * @description API 목록 조회(2-1) - 
+	 * @date 2023.01.19
+	 * @author lgw
+	 * @return
+	 * @throws Exception
+	 */
+	public List<StockVo> selectStockDataList(StockVo vo) throws Exception;
 	
 	/**
 	 * @description API 목록 조회(3) - 지역코드 조회
@@ -60,6 +68,7 @@ public interface ApiService {
 	
 	public List<TouristVo> selectAreaCodeList() throws Exception;
 	
+	
 	/**
 	 * @description API 목록 조회(3) - 관광지 데이터 조회
 	 * @date 2023.01.30
@@ -68,7 +77,6 @@ public interface ApiService {
 	 * @throws Exception
 	 */
 	public List<TouristVo> selectTouristDataList(TouristVo vo) throws Exception;
-	
 	
 	
 	

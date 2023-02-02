@@ -131,38 +131,36 @@
 										</header>
 									<div class="content">																	
 									</div>
-<!-- 								</section> -->
-								<section>
+							</section> 
+<!-- 								<section>
 									<div class="content">
 										<div class="inner">
 											<header class="major">
 												<h3></h3>
 											</header>
 											<p></p>
-											<!-- <ul class="actions">
+											<ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul> -->
+											</ul>
 										</div>
 									</div>
 								</section>
-								<section>
-									<a href="generic.html" class="image">
-										<img src="images/pic10.jpg" alt="" data-position="25% 25%" />
-									</a>
+								\ -->
+							<!-- 	<section>
 									<div class="content">
 										<div class="inner">
 											<header class="major">
 												<h3></h3>
 											</header>
 											<p></p>
-											<!-- <ul class="actions">
+											<ul class="actions">
 												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul> -->
+											</ul>
 										</div>
 									</div>
 								</section>
 							</section>
-
+ -->
 <!-- 						Three
 							<section id="three">
 								<div class="inner">

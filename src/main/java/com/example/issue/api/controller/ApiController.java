@@ -136,7 +136,7 @@ public class ApiController extends BaseController{
 	  * @param mav
 	  * @return
 	  */
-	@RequestMapping(value="/stockListAjax")
+	@RequestMapping(value="/stock/stockListAjax", method=RequestMethod.POST, produces="application/json; charset=UTF-8")
 	public void stockListAjax(HttpServletRequest request, HttpServletResponse response
 			, @ModelAttribute("StockVo") StockVo vo, HttpSession session)throws Exception{
 		
@@ -144,9 +144,11 @@ public class ApiController extends BaseController{
 		  String resultCode ="";
 	      PrintWriter out = response.getWriter();
 	      String pagingTag = "";
-
+	      List<StockVo> stockDataList = apiService.selectStockDataList(vo);
+	      int totalCount = stockDataList.size();
+	      logger.info("controller::response::{}" , stockDataList.toString());
 		
-		out.print(getResultModel(resultCode, resultMessage, null, null, 0));
+		out.print(getResultModel(resultCode, resultMessage, null, stockDataList, totalCount));
 	}
 	
 	
