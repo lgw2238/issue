@@ -43,72 +43,56 @@
 							<section id="one">
 								<div class="inner">
 									<header class="major">
-										<h1>임건우</h1>
+										<h1>임건우</h1>										
 									</header>
-									<span class="image main"><img src="${pageContext.request.contextPath}/images/pic11.jpg" alt="" /></span>
-									<p>Donec eget ex magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fergiat. Pellentesque in mi eu massa lacinia malesuada et a elit. Donec urna ex, lacinia in purus ac, pretium pulvinar mauris. Curabitur sapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit.</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam tristique libero eu nibh porttitor fermentum. Nullam venenatis erat id vehicula viverra. Nunc ultrices eros ut ultricies condimentum. Mauris risus lacus, blandit sit amet venenatis non, bibendum vitae dolor. Nunc lorem mauris, fringilla in aliquam at, euismod in lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In non lorem sit amet elit placerat maximus. Pellentesque aliquam maximus risus, vel sed vehicula.</p>
-									<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+									<h2>Web Developer</h2>
+									<span class="image main"><img src="${pageContext.request.contextPath}/images/pic11.jpg" alt="" /></span>							
+								</div>								
+							</section>	
+							<section id="two" class="spotlights">
+							 	<div class="inner"> 
+									<header class="major">
+										<h1>SKILLS</h1>
+									</header>	
+									<div id="skillsDiv">
+										<ul id="IDE">
+											<h3>IDE, DB TOOL</h3>										
+											<img src="https://img.shields.io/badge/Eclipse IDE-2C2255?style=for-the-badge&logo=Eclipse IDE&logoColor=white">											
+										</ul>
+										<ul id="STACK">
+											<h3>STACK</h3>
+											<img src="https://img.shields.io/badge/Java-3776AB?style=for-the-badge&logo=Javascript&logoColor=white"> 
+											<img src="https://img.shields.io/badge/Javascript-F7DF1E?style=for-the-badge&logo=Javascript&logoColor=white"> 
+											<img src="https://img.shields.io/badge/node.js-339933?style=for-the-badge&logo=node.js&logoColor=white">		
+											<img src="https://img.shields.io/badge/vue.js-339933?style=for-the-badge&logo=vue.js&logoColor=white">				
+										</ul>
+										<ul id="db">
+											<h3>DB</h3>
+											<img src="https://img.shields.io/badge/Mysql-4479A1?style=for-the-badge&logo=Mysql&logoColor=white"> 
+											<img src="https://img.shields.io/badge/MariaDb-4479A1?style=for-the-badge&logo=MariaDb&logoColor=white"> 
+										</ul>
+										<ul id="infra">
+											<h3>INFRA</h3>
+											<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
+											<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
+											<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white">
+										</ul>									
+									</div>
 								</div>
 							</section>
-
+							<section id="three" class="spotlights">
+								<div class="inner">
+									<header class="major">
+										<h1>경력</h1>
+									</header>	
+								</div>	
+							</section>
 					</div>
-
-				<!-- Contact -->
-					<section id="contact">
-						<div class="inner">
-							<section>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half">
-											<label for="name">Name</label>
-											<input type="text" name="name" id="name" />
-										</div>
-										<div class="field half">
-											<label for="email">Email</label>
-											<input type="text" name="email" id="email" />
-										</div>
-										<div class="field">
-											<label for="message">Message</label>
-											<textarea name="message" id="message" rows="6"></textarea>
-										</div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send Message" class="primary" /></li>
-										<li><input type="reset" value="Clear" /></li>
-									</ul>
-								</form>
-							</section>
-							<section class="split">
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-envelope"></span>
-										<h3>Email</h3>
-										<a href="#">information@untitled.tld</a>
-									</div>
-								</section>
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-phone"></span>
-										<h3>Phone</h3>
-										<span>(000) 000-0000 x12387</span>
-									</div>
-								</section>
-								<section>
-									<div class="contact-method">
-										<span class="icon solid alt fa-home"></span>
-										<h3>Address</h3>
-										<span>1234 Somewhere Road #5432<br />
-										Nashville, TN 00000<br />
-										United States of America</span>
-									</div>
-								</section>
-							</section>
-						</div>
-					</section>
+				
 
 				<!-- Footer -->
-					<footer id="footer">
+				<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+<!-- 					<footer id="footer">
 						<div class="inner">
 							<ul class="icons">
 								<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
@@ -125,7 +109,7 @@
 
 			</div>
 
-		<!-- Scripts -->
+		Scripts
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
@@ -133,6 +117,6 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-
+ -->
 	</body>
 </html>

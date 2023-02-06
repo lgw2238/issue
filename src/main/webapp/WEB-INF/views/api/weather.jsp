@@ -111,6 +111,11 @@ function divInit(){
 
 }
 
+function openWeatherModal(data){
+    var data = data;
+	console.log("data:", data);
+}
+
 
 //지도 그리기
 function drawMap(target) {
@@ -132,7 +137,8 @@ function drawMap(target) {
         .scale(projection.scale())
         .scaleExtent([height, 800 * height])
         .on('zoom', zoom);
-
+   		
+   		
     var svg = d3
         .select(target)
         .append('svg')
@@ -140,17 +146,20 @@ function drawMap(target) {
         .attr('height', height + 'px')
         .attr('id', 'map')
         .attr('class', 'map');
-
+/*         .on('click', openWeatherModal); */
+ 		
+	
     var states = svg
         .append('g')
         .attr('id', 'states')
+        .attr('onclick', 'states')
         .call(zoom);
-
+		
     states
         .append('rect')
         .attr('class', 'background')
         .attr('width', width + 'px')
-        .attr('height', height + 'px');
+        .attr('height', height + 'px')
 
     //geoJson데이터를 파싱하여 지도그리기
     d3.json('${pageContext.request.contextPath}/assets/js/korea.json', function(json) {
@@ -158,11 +167,14 @@ function drawMap(target) {
             .selectAll('path') //지역 설정
             .data(json.features)
             .enter()
-            .append('path')
+            .append('path')          
             .attr('d', path)
+            .attr('onclick', function(d) {
+                return 'javascript:openWeatherModal("'+d.properties.name_eng+'");';
+            })            
             .attr('id', function(d) {
                 return 'path-' + d.properties.name_eng;
-            });
+            })
 
         labels = states
             .selectAll('text')
@@ -170,7 +182,7 @@ function drawMap(target) {
             .enter()
             .append('text')
             .attr('transform', translateTolabel)
-            .attr('id', function(d) {
+            .on('id', function(d) {
                 return 'label-' + d.properties.name_eng;
             })
             .attr('text-anchor', 'middle')
@@ -178,11 +190,13 @@ function drawMap(target) {
             .text(function(d) {
                 return d.properties.name;
             });
+
     });
 
     //텍스트 위치 조절 - 하드코딩으로 위치 조절을 했습니다.
     function translateTolabel(d) {
         var arr = path.centroid(d);
+        
         if (d.properties.code == 31) {
             //서울 경기도 이름 겹쳐서 경기도 내리기
             arr[1] +=
@@ -204,6 +218,8 @@ function drawMap(target) {
         states.selectAll('path').attr('d', path);
         labels.attr('transform', translateTolabel);
     }
+    
+
 }
 
 

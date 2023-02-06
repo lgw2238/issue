@@ -4,6 +4,11 @@
 <script type="text/javascript">
 
 
+
+$(document).ready(function() {
+	stockApi("KOSPI");
+});
+
 	function makeExchangeTable(exchangeRateDataList){
 	
 			console.log(typeof exchangeRateDataList);
@@ -42,7 +47,6 @@
 				} 
 			});			
 		}	
-
 
 	
 	function stockApi(parameter){
@@ -84,13 +88,12 @@
 		    	  
 				 htmlTag+="<tr>"
 		    	 htmlTag+="<td>"+bodySplit[0]+"</td>"	
-		    	 htmlTag+="<td>"+bodySplit[1]+"</td>"	
-
-		    	 if(bodySplit[1] == "JYP"){			    	 
+		    	 if(bodySplit[1] == "JYP" || bodySplit[1] == "CJ"){		
+		    		 htmlTag+="<td>"+bodySplit[1].concat(bodySplit[2])+"</td>"   	 
 			     }else{
-			    	 htmlTag+="<td>"+bodySplit[2]+"</td>"
-				 }
-		    	 
+			    	 htmlTag+="<td>"+bodySplit[1]+"</td>"	
+			    	 htmlTag+="<td>"+bodySplit[2]+"</td>"	
+				 }		    	 		    	 
 		    	 htmlTag+="<td>"+bodySplit[3]+"</td>"
 		    	 htmlTag+="<td>"+bodySplit[4]+"</td>"
 		    	 htmlTag+="<td>"+bodySplit[5]+"</td>"
@@ -101,7 +104,7 @@
 		    	 htmlTag+="<td>"+bodySplit[10]+"</td>"
 		    	 htmlTag+="<td>"+bodySplit[11]+"</td>"
 		    	 
-		    	 if(bodySplit[1] == "JYP"){		
+		    	 if(bodySplit[1] == "JYP" || bodySplit[1] == "CJ"){		
 		    		 htmlTag+="<td>"+bodySplit[12]+"</td>"	    	 
 			     }else{
 			    	
@@ -163,9 +166,10 @@
 							<section id="one">
 								<div class="inner">
 									<header class="major">
-										<h2>내 종목 시세 조회</h2>
+										<h2>글로벌 지수</h2>
 									</header>
-									<p></p>
+									<table class="JisuTable">
+									</table>
 								</div>
 							</section>
 
