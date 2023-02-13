@@ -25,4 +25,9 @@ public class StockVo {
 	private String stockBody;
 	/* crawling request parameter */
 	private String stockType;
+	
+	
+	
+	/* 환율 정보 full String*/
+	private String exchangeBody;
 }

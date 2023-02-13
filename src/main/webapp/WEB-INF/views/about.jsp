@@ -84,7 +84,9 @@
 								<div class="inner">
 									<header class="major">
 										<h1>경력</h1>
-									</header>	
+									</header>
+									
+									<h2>현 이지에이스 재직 : 2021.06.07 ~ NOW	</h2>
 								</div>	
 							</section>
 					</div>

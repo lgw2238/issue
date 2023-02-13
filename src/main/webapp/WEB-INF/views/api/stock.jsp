@@ -7,40 +7,23 @@
 
 $(document).ready(function() {
 	stockApi("KOSPI");
+	exchangeApi();
+
 });
 
-	function makeExchangeTable(exchangeRateDataList){
-	
-			console.log(typeof exchangeRateDataList);
-	
-			/*환율 화면 생성*/
-			var makeExchangeTableHtml = "" ;
-	 		for(var i = 0; i< exchangeRateDataList.count; i++){
-				if(exchangeRateDataList[i].billName != null){
-					makeExchangeTableHtml += "<tr>"; 
-					makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].curName+ "</td>"
-				    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].billName+ "</td>"
-				    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].sendTax+ "</td>"
-				    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].receiveTax+ "</td>"
-				    makeExchangeTableHtml += "<td>" +exchangeRateDataList[i].standatdTax+ "</td>"
-				    makeExchangeTableHtml += "</tr>"; 
-				}
-			}
-			console.log(makeExchangeTableHtml);
-			$("#exchangeDataTable").append(makeExchangeTableHtml);
-	   }
 
-	function apiAjax(){
+	function exchangeApi(){
 		$.ajax({
 			async       : false,
 			type        : "post",
-			url         : "${pageContext.request.contextPath}/api/stock",
+			url         : "${pageContext.request.contextPath}/api/stock/exchangeListAjax",
 			contentType : "application/x-www-form-urlencoded;charset=UTF-8", 
 			dataType    : "json",
-			data 		: {  gameIdList : gameContentsId
-							,level3MenuId : $("#level3MenuId").val() },
+			data 		: {   },
 			success     : function(json) {
-	
+						console.log("exChangejson:", json);
+						var resultData = json.resultData;
+						drawScreenForExchange(resultData);
 			},
 			error : function(data, status, error) {
 				location.href = "${pageContext.request.contextPath}/error"
@@ -120,13 +103,57 @@ $(document).ready(function() {
 			$("#stockMajor").text("KOSDAQ 상위 종목(20)");
 		}else{
 			$("#stockMajor").text("KOSPI 상위 종목(20)");
-		}
-		
-		$("#stockInfoTable").html(htmlTag);
-	
+		}	
+		$("#stockInfoTable").html(htmlTag);		
 	}
 
-	
+
+	function drawScreenForExchange(resultData){
+		console.log("drawScreenForExchange:", resultData);
+		 var exchangeTag = "";
+		 var bodySplit = "";
+		 if(resultData != null || resultData != ""){
+			 /* 전체 data for문 */ 
+		     for(var i=0; i<resultData.length; i++){
+		    	 body = resultData[i].exchangeBody;
+		    	 
+		    	 bodySplit = body.split('|'); 
+    			 exchangeTag+="<tr>"
+        	     if(bodySplit[0] =="일본"){
+        	    	 exchangeTag+="<td>"+bodySplit[0].concat(bodySplit[1]+bodySplit[2])+"</td>"		
+        	    	 exchangeTag+="<td>"+bodySplit[3]+"(원)</td>"
+        	    	 if(bodySplit[4].includes("전일대비상승")){
+        	    		 exchangeTag+="<td>"+bodySplit[4].replace("전일대비상승", "+")+"</td>"	
+            	   	 }else if(bodySplit[4].includes("전일대비하락")){
+            	   		 exchangeTag+="<td>"+bodySplit[4].replace("전일대비하락", "-")+"</td>"	
+                	 }else{
+
+                     }
+        			
+        			 exchangeTag+="<td>"+bodySplit[5]+"</td>"	
+        	     }else{
+        			 exchangeTag+="<td>"+bodySplit[0].concat(bodySplit[1])+"</td>"			
+        			 exchangeTag+="<td>"+bodySplit[2]+"(원)</td>"
+        			 if(bodySplit[3].includes("전일대비상승")){
+        	    		 exchangeTag+="<td>"+bodySplit[3].replace("전일대비상승", "+")+"</td>"	
+            	   	 }else if(bodySplit[3].includes("전일대비하락")){
+            	   		 exchangeTag+="<td>"+bodySplit[3].replace("전일대비하락", "-")+"</td>"	
+                	 }else{
+                		 exchangeTag+="<td>"+bodySplit[3]+"</td>"
+                     }
+        			 
+        			 exchangeTag+="<td>"+bodySplit[4]+"</td>"
+
+            	 }
+
+	    		 exchangeTag+="</tr>"
+		     }
+
+		 }
+
+		 $("#exchangeDataTable").html(exchangeTag);		
+
+	}
 
 </script>
 <html>
@@ -220,87 +247,76 @@ $(document).ready(function() {
 												</tr>
 											</thead>
 											<tbody id="stockInfoTable">
-											
-											
-											
-											
-											
-											
-											
 											</tbody>
-
-
-
-
-											
 											</table>
 										</div>
-										<div id="stockDiv">
-										</div>
 									</div>
-								</section>
+								</section>	
 								<section>
-<!-- 									<a href="generic.html" class="image">
-										<img src="images/pic09.jpg" alt="" data-position="top center" />
-									</a> -->
+								
 									<div class="content">
 										<div class="inner">
 											<header class="major">
-												<h3>환율 시세</h3>
+												<h2>환율 시세</h2>
 											</header>
-											<p></p>
-											<ul class="actions">
 												<div id="dataDiv">
-													<table class="alt">
-															<thead>
-																<tr>
-																	<th>국가</th>
-																	<th>통화</th>
-																	<th>송금 받을 때</th>
-																	<th>송금 보낼 때</th>
-																	<th>환율</th>
-																</tr>
-															</thead>
-															<tbody id="exchangeDataTable">															
-															</tbody>
+													<table class="rate_table_info" >
+													<colgroup>
+													<col width="160px">
+													<col width="100px">
+													<col width="142px">
+													<col width="146px">
+													</colgroup>
+													<thead>
+													<tr>
+													<th scope="col" class="col1">
+														<span>국가/통화명</span>
+													</th>
+													<th scope="col" class="col2">
+														<span>매매기준환율</span>
+													</th>
+													<th scope="col" class="col3">
+														<span>전일대비</span>
+													</th>
+													<th scope="col" class="col4">
+														<span>등락률</span>
+													</th>
+													</thead>
+													<tbody id="exchangeDataTable">																												
+													</tbody>
 													</table>																														
 												</div>
-											</ul>
+											</div>
 										</div>
 									</div>
-								</section>
-								<section>
-<!-- 									<a href="generic.html" class="image">
-										<img src="images/pic10.jpg" alt="" data-position="25% 25%" />
-									</a> -->
-									<div class="content">
-										<div class="inner">
-											<header class="major">
-												<h3>원자재 시세</h3>
-											</header>
-											<p></p>
-											<!-- <ul class="actions">
-												<li><a href="generic.html" class="button">Learn more</a></li>
-											</ul> -->
-										</div>
-									</div>
-								</section>
 							</section>
-
+							<section>
+								<div class="content">
+									<div class="inner">
+										<header class="major">
+											<h3>원자재 시세</h3>
+										</header>
+										<p></p>
+									</div>
+								</div>
+							</section>
+						</section>
+						</div>
+					
+	
 						<!-- Three -->
-							<section id="three">
+						<!-- 	<section id="three">
 								<div class="inner">
 									<header class="major">
 										<h2></h2>
 									</header>
 									<p></p>
-									<!-- <ul class="actions">
+									<ul class="actions">
 										<li><a href="generic.html" class="button next">Get Started</a></li>
-									</ul> -->
+									</ul>
 								</div>
-							</section>
+							</section>  -->
 
-					</div>
 			<!-- Footer -->
 			<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 	</body>
