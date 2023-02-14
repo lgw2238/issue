@@ -128,7 +128,7 @@ public class ApiController extends BaseController{
 	}
 	
 	/**
-	  * @description (2-1)주식시세 화면정보 AJAX
+	  * @description (2-1)주식시세 화면정보 AJAX - KOSPI, KOSDAQ 상위 20 종목 시세
 	  * @date 2023.01.16
 	  * @author lgw
 	  * @param req
@@ -151,6 +151,54 @@ public class ApiController extends BaseController{
 		out.print(getResultModel(resultCode, resultMessage, null, stockDataList, totalCount));
 	}
 	
+	/**
+	  * @description (2-2)주식시세 화면정보 AJAX - 환율정보
+	  * @date 2023.02.13
+	  * @author lgw
+	  * @param req
+	  * @param res
+	  * @param mav
+	  * @return
+	  */
+	@RequestMapping(value="/stock/exchangeListAjax", method=RequestMethod.POST, produces="application/json; charset=UTF-8")
+	public void exchangeListAjax(HttpServletRequest request, HttpServletResponse response
+			, @ModelAttribute("StockVo") StockVo vo, HttpSession session)throws Exception{
+		
+		  String resultMessage = "";
+		  String resultCode ="";
+	      PrintWriter out = response.getWriter();
+	      String pagingTag = "";
+	      List<StockVo> exchangeDataList = apiService.selectExchangeDataList(vo);
+	      int totalCount = exchangeDataList.size();
+	      logger.info("controller::response::{}" , exchangeDataList.toString());
+		
+		out.print(getResultModel(resultCode, resultMessage, null, exchangeDataList, totalCount));
+	}
+	
+	
+	/**
+	  * @description (2-3)주식시세 화면정보 AJAX - 지수정보
+	  * @date 2023.02.13
+	  * @author lgw
+	  * @param req
+	  * @param res
+	  * @param mav
+	  * @return
+	  */
+	@RequestMapping(value="/stock/jisuListAjax", method=RequestMethod.POST, produces="application/json; charset=UTF-8")
+	public void jisuListAjax(HttpServletRequest request, HttpServletResponse response
+			, @ModelAttribute("StockVo") StockVo vo, HttpSession session)throws Exception{
+		
+		  String resultMessage = "";
+		  String resultCode ="";
+	      PrintWriter out = response.getWriter();
+	      String pagingTag = "";
+	      List<StockVo> jisuDataList = apiService.selectJisuDataList(vo);
+	      int totalCount = jisuDataList.size();
+	      logger.info("controller::response::{}" , jisuDataList.toString());
+		
+		out.print(getResultModel(resultCode, resultMessage, null, jisuDataList, totalCount));
+	}
 	
 	/**
 	  * @description (3)관광지 추천 API 화면으로 이동

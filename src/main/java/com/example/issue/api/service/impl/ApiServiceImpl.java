@@ -557,6 +557,111 @@ public class ApiServiceImpl implements ApiService{
 		return stockDataList;
 	}
 	
+	
+	
+	@Override
+	public List<StockVo> selectExchangeDataList(StockVo vo) throws Exception {
+        final String exChangeUrl = "https://search.naver.com/search.naver?sm=tab_hty.top&where=nexearch&query=%ED%99%98%EC%9C%A8&oquery=%EC%A3%BC%EC%9A%94%EC%A6%9D%EC%8B%9C&tqi=h%2BFpXwp0Jy0ssM%2ByATdssssstcZ-136190";
+        
+        String connectUrl = exChangeUrl;
+        Connection conn = Jsoup.connect(connectUrl);
+        List<StockVo> exchangeDataList = new ArrayList<StockVo>();	
+        try {
+            Document document = conn.get();
+            Elements stockTitleElements = document.getElementsByClass("rate_table_info");  
+            Elements exChangeTrDownElements = stockTitleElements.select("tr.dw");
+            Elements exChangeTrUpElements = stockTitleElements.select("tr.up");
+//            Elements exChangeTrUpElements = document.getElementsByClass("up");
+//            Elements exChangeTrDownElements = document.getElementsByClass("dw");
+            
+            /* 전일 대비 상승한 환율 정보 데이터 리스트 */
+            for(int i=0; i<exChangeTrUpElements.size(); i++) {
+            		StockVo upVo = new StockVo();
+	            	final String upText = exChangeTrUpElements.get(i).text().replaceAll(" ", "|");	
+	            	if(!upText.contains("지수")) {
+	            		upVo.setExchangeBody(upText);
+	            		exchangeDataList.add(upVo);
+	            	}
+	            		            		            	
+	            }
+	            
+	            /* 전일 대비 하락한 환율 정보 데이터 리스트 */
+	            for(int i=0; i<exChangeTrDownElements.size(); i++) {    
+	            	StockVo dwVo = new StockVo();
+	            	final String dwText = exChangeTrDownElements.get(i).text().replaceAll(" ", "|");
+	            	if(!dwText.contains("지수")) {
+		            	dwVo.setExchangeBody(dwText);
+		            	exchangeDataList.add(dwVo);
+	            	}
+	            }
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		return exchangeDataList;
+	}
+	
+
+	@Override
+	public List<StockVo> selectJisuDataList(StockVo vo) throws Exception {
+        final String crawlingEnterUrl = "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&ie=utf8&query=%EC%A3%BC%EC%9A%94%EC%A6%9D%EC%8B%9C&mra=bjA3";
+        Connection conn = Jsoup.connect(crawlingEnterUrl);
+        List<StockVo> jisuDataList = new ArrayList<StockVo>();	
+        try {
+            Document document = conn.get();
+            Elements kospi = document.getElementsByClass("csp");  
+            Elements kosdaq = document.getElementsByClass("csd");             
+            Elements etc = document.getElementsByClass("lsttype_tb noline"); 
+            Elements etcUpDetail = etc.select("li.up");
+            Elements etcDownDetail = etc.select("li.dw");
+            Elements kospiImg = kospi.select("span.img_bx > img");
+            Elements kosdaqImg = kosdaq.select("span.img_bx > img");
+
+            for(int i=0; i<kospi.size(); i++) {
+            	StockVo jisuVo = new StockVo();
+            	final String kospiText = kospi.get(i).text().replaceAll(" ", "|");
+            	final String kospiImgUrl = kospiImg.get(0).absUrl("src");
+            	jisuVo.setJisuDataBody(kospiText);
+            	jisuVo.setImgLink(kospiImgUrl);
+            	jisuDataList.add(jisuVo);
+            	logger.info("kospiImgUrl:{}", kospiImgUrl);
+            }
+            
+            for(int i=0; i<kosdaq.size(); i++) {
+            	StockVo jisuVo = new StockVo();
+            	final String kosdaqText = kosdaq.get(i).text().replaceAll(" ", "|");
+            	final String kosdaqImgUrl = kosdaqImg.get(0).absUrl("src");
+            	jisuVo.setJisuDataBody(kosdaqText);
+            	jisuVo.setImgLink(kosdaqImgUrl);
+            	jisuDataList.add(jisuVo);
+            	logger.info("kosdaqImgUrl:{}", kosdaqImgUrl);
+            }
+            
+            for(int i=0; i<etcUpDetail.size(); i++) {
+            	StockVo jisuVo = new StockVo();
+            	final String etcText = etcUpDetail.get(i).text().replaceAll(" ", "|");
+            	jisuVo.setJisuDataBody(etcText);
+            	jisuDataList.add(jisuVo);
+            }
+            
+            
+            for(int i=0; i<etcDownDetail.size(); i++) {
+            	StockVo jisuVo = new StockVo();
+            	final String etcText = etcDownDetail.get(i).text().replaceAll(" ", "|");
+            	jisuVo.setJisuDataBody(etcText);
+            	jisuDataList.add(jisuVo);
+            }
+            
+            
+            	logger.info("etcUpDetail:{}" + etcUpDetail.toString());
+            	logger.info("etcDownDetail:{}" + etcDownDetail.toString());
+            	logger.info("jisuDataList:{}" +jisuDataList.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		return jisuDataList;
+	}
 }
 
 

@@ -50,13 +50,31 @@ public interface ApiService {
 
 	
 	/**
-	 * @description API 목록 조회(2-1) - 
+	 * @description API 목록 조회(2-1) - 주식 상위종목 조회 크롤링 데이터
 	 * @date 2023.01.19
 	 * @author lgw
 	 * @return
 	 * @throws Exception
 	 */
 	public List<StockVo> selectStockDataList(StockVo vo) throws Exception;
+	
+	/**
+	 * @description API 목록 조회(2-2) - 환율 정보 조회 크롤링
+	 * @date 2023.02.13
+	 * @author lgw
+	 * @return
+	 * @throws Exception
+	 */
+	public List<StockVo> selectExchangeDataList(StockVo vo) throws Exception;
+	
+	/**
+	 * @description API 목록 조회(2-3) - 지수 정보 조회 크롤링
+	 * @date 2023.02.13
+	 * @author lgw
+	 * @return
+	 * @throws Exception
+	 */
+	public List<StockVo> selectJisuDataList(StockVo vo) throws Exception;
 	
 	/**
 	 * @description API 목록 조회(3) - 지역코드 조회
