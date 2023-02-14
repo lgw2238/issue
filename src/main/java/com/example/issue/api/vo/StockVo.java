@@ -30,4 +30,10 @@ public class StockVo {
 	
 	/* 환율 정보 full String*/
 	private String exchangeBody;
+	
+	/* 통합지수 정보 full String*/
+	private String jisuDataBody;
+	
+	/* jisu img src Link */
+	private String imgLink;
 }

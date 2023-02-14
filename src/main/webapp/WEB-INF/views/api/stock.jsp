@@ -1,5 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<style type="text/css">
+ 
+    /*   table {
+        margin: 10px 0px;
+        text-align: center;
+        font-family: Consolas, monospace;
+        font-style: italic;
+        font-size: 13px;
+      } 
+
+      
+      div{
+      	margin: 10px 0px;
+        text-align: center;
+        font-family: Consolas, monospace;
+        font-style: italic;
+        font-size: 13px; 
+      }
+      .JisuTable {
+        border: 1px solid #ffffff;
+ 	    width: 300px;
+        height:600px; 
+        box-sizing:border-box; 
+        position: relative; 
+      }
+      .innerBox {
+       border: 1px solid #ffffff;
+   	   float: left;
+   	   padding: 10px; 
+   	   width: 11%;
+      
+      
+      } */
+</style>
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 
@@ -8,8 +42,27 @@
 $(document).ready(function() {
 	stockApi("KOSPI");
 	exchangeApi();
-
+	jisuApi();
 });
+
+	function jisuApi(){
+		$.ajax({
+			async       : false,
+			type        : "post",
+			url         : "${pageContext.request.contextPath}/api/stock/jisuListAjax",
+			contentType : "application/x-www-form-urlencoded;charset=UTF-8", 
+			dataType    : "json",
+			data 		: {   },
+			success     : function(json) {
+						var resultData = json.resultData;
+						console.log("jisuData:", resultData);
+						drawScreenForJisu(resultData);
+			},
+			error : function(data, status, error) {
+				location.href = "${pageContext.request.contextPath}/error"
+				} 
+			});			
+		}	
 
 
 	function exchangeApi(){
@@ -150,11 +203,78 @@ $(document).ready(function() {
 		     }
 
 		 }
-
 		 $("#exchangeDataTable").html(exchangeTag);		
 
 	}
 
+
+
+
+	function drawScreenForJisu(resultData){
+		console.log("drawScreenForJisu:", resultData);
+		 var jisuTag = "";
+		 var bodySplit = "";
+		 var imgSrc = "";
+		 var count = 0;
+		 if(resultData != null || resultData != ""){
+			 /* 전체 data for문 */ 
+		     for(var i=0; i<resultData.length; i++){
+		    	 body = resultData[i].jisuDataBody;
+		    	 imgSrc = resultData[i].imgLink;
+		    	 count = body.split('|').length;
+		    	 bodySplit = body.split('|'); 
+
+
+		    	 
+		    	 jisuTag+="<div class='innerBox'>"
+	    		 jisuTag+="<tr>"
+		    		 
+				 if(count == 6){
+					 jisuTag+="<td>"+bodySplit[0]+"";
+	    		     if(imgSrc != null){
+	    		    	 jisuTag+= "<img src='"+ imgSrc +"'  id='jisuimg'></td>";
+	        		 }
+	    		     jisuTag+="<td>"+bodySplit[1]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[2]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[3]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[4]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[5]+"</td>"
+	    		     if(bodySplit[0] != "KOSPI" && bodySplit[0] != "KOSDAQ"){
+	    		    	 jisuTag+="<td>"+bodySplit[6]+"</td>"
+					 }
+					 
+				 }else if(count == 7){
+					 jisuTag+="<td>"+bodySplit[0]+"</td>"
+	    		     if(imgSrc != null){
+	    		    	 jisuTag+= "<td><img src='"+ imgSrc +"'  id='jisuimg'></td>";
+	        		 }
+	    		     jisuTag+="<td>"+bodySplit[1]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[2]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[3].concat(bodySplit[4])+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[5]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[6]+"</td>"
+	    		     
+				 }else if(count == 8){
+					 jisuTag+="<td>"+bodySplit[0].concat(bodySplit[1])+"</td>"
+	    		     if(imgSrc != null){
+	    		    	 jisuTag+= "<td><img src='"+ imgSrc +"'  id='jisuimg'></td>";
+	        		 }
+	    		     jisuTag+="<td>"+bodySplit[2]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[3]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[4].concat(bodySplit[5])+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[6]+"</td>"
+	    		     jisuTag+="<td>"+bodySplit[7]+"</td>"
+
+				 }
+
+    		     jisuTag+="</tr>"
+    			 jisuTag+="</div>"
+        	   
+		     }
+		 }
+		 $("#JisuTable").html(jisuTag);		
+
+	}
 </script>
 <html>
 	<head>
@@ -194,9 +314,29 @@ $(document).ready(function() {
 								<div class="inner">
 									<header class="major">
 										<h2>글로벌 지수</h2>
+										<table>
+												<colgroup>	
+									                <col style="width:25%;" />
+									                <col style="width:10%;" />
+									                <col style="width:25%;" />
+									                <col style="width:15%;" />
+									                <col style="width:15%;" />
+									                <col style="width:10%;" />
+									                <col />
+									            </colgroup>
+											<thead>
+												<tr>
+													<th scope="col">지수명</th>
+													<th scope="col">기준일자</th>
+													<th scope="col">지수</th>
+													<th scope="col">상승여부</th>
+													<th scope="col">상승포인트</th>
+													<th scope="col">상승률</th>
+												</tr>
+											</thead>
+										<tbody id="JisuTable"></tbody>
+										</table>
 									</header>
-									<table class="JisuTable">
-									</table>
 								</div>
 							</section>
 
@@ -252,8 +392,8 @@ $(document).ready(function() {
 										</div>
 									</div>
 								</section>	
-								<section>
-								
+							</section>
+								<section>								
 									<div class="content">
 										<div class="inner">
 											<header class="major">
