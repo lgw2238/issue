@@ -2,37 +2,6 @@
 <!DOCTYPE html>
 <style type="text/css">
  
-    /*   table {
-        margin: 10px 0px;
-        text-align: center;
-        font-family: Consolas, monospace;
-        font-style: italic;
-        font-size: 13px;
-      } 
-
-      
-      div{
-      	margin: 10px 0px;
-        text-align: center;
-        font-family: Consolas, monospace;
-        font-style: italic;
-        font-size: 13px; 
-      }
-      .JisuTable {
-        border: 1px solid #ffffff;
- 	    width: 300px;
-        height:600px; 
-        box-sizing:border-box; 
-        position: relative; 
-      }
-      .innerBox {
-       border: 1px solid #ffffff;
-   	   float: left;
-   	   padding: 10px; 
-   	   width: 11%;
-      
-      
-      } */
 </style>
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
@@ -230,7 +199,7 @@ $(document).ready(function() {
 	    		 jisuTag+="<tr>"
 		    		 
 				 if(count == 6){
-					 jisuTag+="<td>"+bodySplit[0]+"";
+					 jisuTag+="<td>"+bodySplit[0]+"         ";
 	    		     if(imgSrc != null){
 	    		    	 jisuTag+= "<img src='"+ imgSrc +"'  id='jisuimg'></td>";
 	        		 }
@@ -288,7 +257,9 @@ $(document).ready(function() {
 		
 		<!-- Wrapper -->
 			<div id="wrapper">
-			 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
+			
+			<!-- Header -->
+				 <%@ include file="/WEB-INF/views/layout/header.jsp" %>
 			
 				<!-- Banner -->
 				<!-- Note: The "styleN" class below should match that of the header element. -->
@@ -312,8 +283,9 @@ $(document).ready(function() {
 						<!-- One -->
 							<section id="one">
 								<div class="inner">
-									<header class="major">
+									<header class="major">									
 										<h2>글로벌 지수</h2>
+										</header>
 										<table>
 												<colgroup>	
 									                <col style="width:25%;" />
@@ -336,7 +308,6 @@ $(document).ready(function() {
 											</thead>
 										<tbody id="JisuTable"></tbody>
 										</table>
-									</header>
 								</div>
 							</section>
 
@@ -363,7 +334,7 @@ $(document).ready(function() {
 									                <col style="width:7%;" />
 									                <col style="width:8%;" />
 									                <col style="width:8%;" />
-									                <col style="width:10%;" />
+									                <col style="width:8%;" />
 									                <col style="width:10%;" />
 									                <col style="width:8%;" />
 									                <col style="width:8%;" />
@@ -392,8 +363,7 @@ $(document).ready(function() {
 										</div>
 									</div>
 								</section>	
-							</section>
-								<section>								
+							</section>					
 									<div class="content">
 										<div class="inner">
 											<header class="major">
@@ -429,8 +399,7 @@ $(document).ready(function() {
 											</div>
 										</div>
 									</div>
-							</section>
-							<section>
+<!-- 							<section>
 								<div class="content">
 									<div class="inner">
 										<header class="major">
@@ -439,23 +408,18 @@ $(document).ready(function() {
 										<p></p>
 									</div>
 								</div>
-							</section>
-						</section>
-						</div>
-					
+							</section> -->
+
 	
 						<!-- Three -->
-						<!-- 	<section id="three">
+							<section id="three">
 								<div class="inner">
-									<header class="major">
+								<!-- 	<header class="major">
 										<h2></h2>
 									</header>
-									<p></p>
-									<ul class="actions">
-										<li><a href="generic.html" class="button next">Get Started</a></li>
-									</ul>
+									<p></p>			 -->			
 								</div>
-							</section>  -->
+							</section> 
 
 			<!-- Footer -->
 			<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
