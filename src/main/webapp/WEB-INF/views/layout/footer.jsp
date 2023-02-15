@@ -93,7 +93,8 @@
 									<div class="contact-method">
 										<span class="icon solid alt fa-envelope"></span>
 										<h3>Email</h3>
-										<a href="https://www.google.co.kr/">lgw2236@gmail.com</a>
+										<a href="mailto:lgw2236@gmail.com">lgw2236@gmail.com</a></br>
+										<a href="mailto:nihao3634@naver.com">nihao3634@naver.com</a>
 									</div>
 								</section>
 								<section>
@@ -124,11 +125,13 @@
 								<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
 								<!-- <li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li> -->
 								<li><a href="#" class="icon brands alt fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+								<h4 style="text-align:right;">Forty by HTML5 UP html5up.net | @ajlkn </h4>
 							</ul>
 <!-- 							<ul class="copyright">
 								<li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li>
 							</ul> -->
 						</div>
+							
 					</footer>
 
 			</div>
