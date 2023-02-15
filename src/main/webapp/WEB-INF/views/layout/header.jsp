@@ -19,6 +19,6 @@
 						</ul>
 						<ul class="actions stacked">
 							<li><a href="${pageContext.request.contextPath}/about" class="button primary fit">About Me</a></li>
-							<li><a href="#" class="button fit">Log In</a></li>
+							<!-- <li><a href="#" class="button fit">Log In</a></li> -->
 						</ul>
 					</nav>
