@@ -57,11 +57,11 @@ public class ApiController extends BaseController{
 		logger.info("weather Api start");
 		
 		
-		List<WeatherVo> localWeather = apiService.selectWeatherData(vo);
-		String todayTemp = localWeather.get(0).getFcstValue();
-		logger.info("localWeather: {}", localWeather.get(0).getFcstValue());
-		
-		mav.addObject("localWeather", localWeather.get(0));
+//		List<WeatherVo> localWeather = apiService.selectWeatherData(vo);
+//		String todayTemp = localWeather.get(0).getFcstValue();
+//		logger.info("localWeather: {}", localWeather.get(0).getFcstValue());
+//		
+		//mav.addObject("localWeather", localWeather.get(0));
 		mav.addObject("viewName", "Weather API");	
 		return mav;
 		
