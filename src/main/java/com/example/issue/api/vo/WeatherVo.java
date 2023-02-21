@@ -1,9 +1,5 @@
 package com.example.issue.api.vo;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
 public class WeatherVo {
 
 	  /** 발표일자 */

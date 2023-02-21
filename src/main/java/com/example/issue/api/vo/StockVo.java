@@ -1,11 +1,5 @@
 package com.example.issue.api.vo;
 
-
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-
 public class StockVo {
 	
 	/* 통화 국가 */

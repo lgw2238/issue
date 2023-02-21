@@ -1,12 +1,5 @@
 package com.example.issue.sys.mail.vo;
 
-import java.util.List;
-
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-
 public class MailVo {	 
 
 	  private String sendName;
