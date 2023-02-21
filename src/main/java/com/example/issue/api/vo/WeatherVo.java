@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter @Data
 public class WeatherVo {
 
 	  /** 발표일자 */
@@ -31,7 +30,71 @@ public class WeatherVo {
 	  /** 예보지점 Y 좌표 */
 	  private float ny;
 	  
-	  public enum CategoryType {
+	  public String getBaseDate() {
+		return baseDate;
+	}
+
+	public void setBaseDate(String baseDate) {
+		this.baseDate = baseDate;
+	}
+
+	public String getBaseTime() {
+		return baseTime;
+	}
+
+	public void setBaseTime(String baseTime) {
+		this.baseTime = baseTime;
+	}
+
+	public String getFcstDate() {
+		return fcstDate;
+	}
+
+	public void setFcstDate(String fcstDate) {
+		this.fcstDate = fcstDate;
+	}
+
+	public String getFcstTime() {
+		return fcstTime;
+	}
+
+	public void setFcstTime(String fcstTime) {
+		this.fcstTime = fcstTime;
+	}
+
+	public CategoryType getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryType category) {
+		this.category = category;
+	}
+
+	public String getFcstValue() {
+		return fcstValue;
+	}
+
+	public void setFcstValue(String fcstValue) {
+		this.fcstValue = fcstValue;
+	}
+
+	public float getNx() {
+		return nx;
+	}
+
+	public void setNx(float nx) {
+		this.nx = nx;
+	}
+
+	public float getNy() {
+		return ny;
+	}
+
+	public void setNy(float ny) {
+		this.ny = ny;
+	}
+
+	public enum CategoryType {
 	    POP("강수확률", "강수확률"),
 	    PTY("강수형태", "코드값"),
 	    R06("6시간 강수량", "범주 (1 mm)"),
@@ -59,5 +122,7 @@ public class WeatherVo {
 	      this.unit = unit;
 	    }
 	}
+	  
+	  
 }
 

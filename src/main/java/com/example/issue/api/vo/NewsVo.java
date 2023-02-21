@@ -1,10 +1,5 @@
 package com.example.issue.api.vo;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter @Setter @Data
 public class NewsVo {
 		
 	
@@ -15,6 +10,46 @@ public class NewsVo {
 	
 	/* 뉴스 구분 parameter */
 	private String genre;
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getTitlePhotoLink() {
+		return titlePhotoLink;
+	}
+
+	public void setTitlePhotoLink(String titlePhotoLink) {
+		this.titlePhotoLink = titlePhotoLink;
+	}
+
+	public String getTitleLink() {
+		return titleLink;
+	}
+
+	public void setTitleLink(String titleLink) {
+		this.titleLink = titleLink;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
 	
 	
 }
