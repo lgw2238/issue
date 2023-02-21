@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src='http://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script>
+<script src='https://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script>
 <script src="https://kit.fontawesome.com/17b5a91918.js" crossorigin="anonymous"></script>
 <script type="text/css" src="${pageContext.request.contextPath}/assets/css/weather.css"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/assets/js/d3.js"></script>
@@ -38,7 +38,7 @@ $(document).ready(function() {
 			 $.ajax({
 					async       : true,
 					type        : "get",
-					url         : "http://api.openweathermap.org/data/2.5/weather",
+					url         : "https://api.openweathermap.org/data/2.5/weather",
 					contentType : "application/x-www-form-urlencoded;charset=UTF-8",
 					data        : {
 						q:city,
