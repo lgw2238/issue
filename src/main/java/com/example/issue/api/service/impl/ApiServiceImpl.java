@@ -414,7 +414,7 @@ public class ApiServiceImpl implements ApiService{
 			    if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 			        StringBuilder sb = new StringBuilder();
 			
-			        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(),"UTF-8"));
 			        in.lines().forEach(line -> {
 			          sb.append(line);
 			        });
