@@ -339,8 +339,9 @@ public class ApiServiceImpl implements ApiService{
 		    String data;
 		    if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 		        StringBuilder sb = new StringBuilder();
-		
-		        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		      
+		        //BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 		        in.lines().forEach(line -> {
 		          sb.append(line);
 		        });
@@ -349,7 +350,6 @@ public class ApiServiceImpl implements ApiService{
 		        conn.disconnect();
 		        
 		        data = sb.toString();
-
 		        /* API 응답값이 json array 형식 -> object 변환 */
 		        JSONParser jsonParser = new JSONParser();
 		        JSONObject jsonObject = (JSONObject)jsonParser.parse(data);
