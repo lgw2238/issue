@@ -19,6 +19,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -362,7 +363,8 @@ public class ApiServiceImpl implements ApiService{
 		        	/* api 정보 담을 객체 생성  */
 			        TouristVo tourist = new TouristVo();	
 			        
-		        	JSONObject jobj = (JSONObject) jsonArray.get(i);	
+		        	JSONObject jobj = (JSONObject) jsonArray.get(i);
+		        	
 		        	 if(jobj != null) {		
 		        		 tourist.setNum(i);
 		        		 tourist.setAreaCode((String) jobj.get("areacode"));

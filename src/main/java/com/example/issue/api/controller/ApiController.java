@@ -245,7 +245,7 @@ public class ApiController extends BaseController{
 	      PrintWriter out = response.getWriter();
 	      List<TouristVo> tourList = apiService.selectTouristDataList(vo);
 	      int totalCount = tourList.size();
-	      
+	      response.setContentType("application/x-json;  charset=UTF-8");
 		out.print(getResultModel(resultCode, resultMessage, null, tourList, totalCount));
 	}
 	
