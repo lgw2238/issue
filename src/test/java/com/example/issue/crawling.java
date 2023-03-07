@@ -12,29 +12,26 @@ import java.io.IOException;
 public class crawling {
 
     public static void main(String[] args) {
-        final String incrawlingUrl = "https://news.naver.com/main/list.naver?mode=LS2D&mid=shm&sid1=101&sid2=262";
-        Connection conn = Jsoup.connect(incrawlingUrl);
+        final String crawlingEnterUrl = "https://entertain.naver.com/home";
+        Connection conn = Jsoup.connect(crawlingEnterUrl);
 
         try {
             Document document = conn.get();
-            Elements imageUrlElements = document.getElementsByClass("photo");           
-            Elements titleElements = document.select("dt.photo > a");
-            Elements titleElements2 = document.select("dt.photo > a > img");
+            Elements enterUrlElements = document.getElementsByClass("lst_item _page_no_1");   
+            Elements titleUrlElements = document.getElementsByClass("title_area");   
+            Elements titleElements2 = document.select("div.title_area > a.title");
+            Elements titleElements3 = document.select("a.thumb_area > img");
+            	for (int i=0; i<10; i++) {
+            		final String enterTitle = titleElements2.get(i).text();
+            		final String enterImgLink = titleElements3.get(i).absUrl("src");
+            		final String enterTag = titleElements2.get(i).absUrl("href");
+            		
+            		System.out.println("enterTitle:" +enterTitle);
+    				System.out.println("enterImgLink:" +enterImgLink);
+    				System.out.println("enterTag:" +enterTag);
+    				
+            	}
 
-//            for (int j = 0; j < titleElements.size(); j++) {
-            for (int j = 0; j < 10; j++) {
-            	final String title = titleElements2.get(j).absUrl("alt").replace("https://news.naver.com/main/", "");
-            	final String titlelink = titleElements.get(j).absUrl("href");               
-            	final String titlePhoto = titleElements2.get(j).absUrl("src");
-            	
-                System.out.println("title:"+title);
-                System.out.println("titlelink:"+titlelink);
-                System.out.println("titlePhoto:"+titlePhoto);               
-            }
-          
-            for (Element element : imageUrlElements) {
-                System.out.println(element);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
