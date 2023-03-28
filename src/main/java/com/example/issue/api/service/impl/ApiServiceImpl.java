@@ -302,7 +302,8 @@ public class ApiServiceImpl implements ApiService{
 	
 	@Override
 	public List<TouristVo> selectTouristDataList(TouristVo vo) throws Exception {
-		 String BASE_URL = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
+		 String BASE_URL = "https://apis.data.go.kr/B551011/KorService/areaBasedList";
+		 //String BASE_URL = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList";
 		 String serviceKey = tourApiKey; 
 		 List<TouristVo> touristDataList = new ArrayList<TouristVo>();	
 		 String areaCodeValue = vo.getAreaCode();
@@ -391,7 +392,8 @@ public class ApiServiceImpl implements ApiService{
 
 	@Override
 	public List<TouristVo> selectAreaCodeList() throws Exception {
-		 String BASE_URL = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode";
+		 //String BASE_URL = "https://api.visitkorea.or.kr/openapi/service/rest/KorService/areaCode";
+		 String BASE_URL = "https://apis.data.go.kr/B551011/KorService/areaCode";
 		 String serviceKey = tourApiKey; 
 		 List<TouristVo> areaCodeList = new ArrayList<TouristVo>();	
 			try {
@@ -423,7 +425,7 @@ public class ApiServiceImpl implements ApiService{
 			        conn.disconnect();
 			        
 			        data = sb.toString();
-
+			        logger.info("selectAreaCodeList data:{}", data);
 			        /* API 응답값이 json array 형식 -> object 변환 */
 			        JSONParser jsonParser = new JSONParser();
 			        JSONObject jsonObject = (JSONObject)jsonParser.parse(data);
