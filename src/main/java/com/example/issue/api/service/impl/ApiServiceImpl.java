@@ -518,6 +518,7 @@ public class ApiServiceImpl implements ApiService{
             Elements stockTitleElements = document.getElementsByClass("rate_table_info");  
             Elements exChangeTrDownElements = stockTitleElements.select("tr.dw");
             Elements exChangeTrUpElements = stockTitleElements.select("tr.up");
+            Elements exChangeTrEqElements = stockTitleElements.select("tr.eq");
 //            Elements exChangeTrUpElements = document.getElementsByClass("up");
 //            Elements exChangeTrDownElements = document.getElementsByClass("dw");
             
@@ -531,17 +532,26 @@ public class ApiServiceImpl implements ApiService{
 	            	}
 	            		            		            	
 	            }
-	            
-	            /* 전일 대비 하락한 환율 정보 데이터 리스트 */
-	            for(int i=0; i<exChangeTrDownElements.size(); i++) {    
-	            	StockVo dwVo = new StockVo();
-	            	final String dwText = exChangeTrDownElements.get(i).text().replaceAll(" ", "|");
-	            	if(!dwText.contains("지수")) {
-		            	dwVo.setExchangeBody(dwText);
-		            	exchangeDataList.add(dwVo);
-	            	}
-	            }
+	                    
+            /* 전일 대비 하락한 환율 정보 데이터 리스트 */
+            for(int i=0; i<exChangeTrDownElements.size(); i++) {    
+            	StockVo dwVo = new StockVo();
+            	final String dwText = exChangeTrDownElements.get(i).text().replaceAll(" ", "|");
+            	if(!dwText.contains("지수")) {
+	            	dwVo.setExchangeBody(dwText);
+	            	exchangeDataList.add(dwVo);
+            	}
+            }
             
+            /* 전일 대비 하락 및 상승 값 동일한 데이터 리스트  */
+            for(int i=0; i<exChangeTrEqElements.size(); i++) {    
+            	StockVo eqVo = new StockVo();
+            	final String eqText = exChangeTrEqElements.get(i).text().replaceAll(" ", "|");
+            	if(!eqText.contains("지수")) {
+            		eqVo.setExchangeBody(eqText);
+	            	exchangeDataList.add(eqVo);
+            	}
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
