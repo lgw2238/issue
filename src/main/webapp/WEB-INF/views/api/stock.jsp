@@ -160,6 +160,8 @@ $(document).ready(function() {
         	    		 exchangeTag+="<td>"+bodySplit[3].replace("전일대비상승", "+")+"</td>"	
             	   	 }else if(bodySplit[3].includes("전일대비하락")){
             	   		 exchangeTag+="<td>"+bodySplit[3].replace("전일대비하락", "-")+"</td>"	
+            	   	 }else if(bodySplit[3].includes("전일대비보합")){
+               	   		 exchangeTag+="<td>"+bodySplit[3].replace("전일대비보합", "")+"</td>"	
                 	 }else{
                 		 exchangeTag+="<td>"+bodySplit[3]+"</td>"
                      }
