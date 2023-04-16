@@ -141,7 +141,7 @@ $(document).ready(function() {
 		    	 
 		    	 bodySplit = body.split('|'); 
     			 exchangeTag+="<tr>"
-        	     if(bodySplit[0] =="일본"){
+        	     if(bodySplit[0] =="일본"){ 
         	    	 exchangeTag+="<td>"+bodySplit[0].concat(bodySplit[1]+bodySplit[2])+"</td>"		
         	    	 exchangeTag+="<td>"+bodySplit[3]+"(원)</td>"
         	    	 if(bodySplit[4].includes("전일대비상승")){
