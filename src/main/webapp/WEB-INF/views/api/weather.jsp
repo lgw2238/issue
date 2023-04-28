@@ -114,6 +114,27 @@ function divInit(){
 function openWeatherModal(data){
     var data = data;
 	console.log("data:", data);
+	/*  $.ajax({
+			async       : true,
+			type        : "POST",
+			url         : "${pageContext.request.contextPath}/api/weather/weatherApiData",
+			contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+			data        : {
+					data: data
+			},
+			dataType    : "json",
+			success     : function(json) {				
+				var resultData = json.resultData;
+				console.log("json:", json);
+				drawUITableWithWeather(json);
+
+		},
+		error       : function(data, status, error) {
+			location.href = "${pageContext.request.contextPath}/error"
+		},complete : function(){
+			 
+		}
+	}); */
 }
 
 
@@ -277,10 +298,13 @@ function drawMap(target) {
 											<select name="demo-category" id="inputCiryValue" style="width:300px;">
 												<option value="">- 도시 날씨 -</option>
 												<option value="Seoul" selected="selected">Seoul</option>
-												<option value="london">London</option>
-												<option value="Tokyo">Tokyo</option>
+												<option value="Tokyo">Tokyo</option>											
 												<option value="Beijing">Beijing</option>
+											    <option value="Sydney">Sydney</option>	
+											    <option value="Paris">Paris</option>
+												<option value="london">London</option>																							
 												<option value="Washington">Washington</option>
+												<option value="los angeles">LA</option>
 												<option value="San Francisco">San Francisco</option>												
 											</select>								
 										</span>
