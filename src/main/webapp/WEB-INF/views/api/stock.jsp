@@ -3,7 +3,7 @@
 <style type="text/css">
  
 </style>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ <%@ include file="/WEB-INF/views/common.jsp" %>
 <script type="text/javascript">
 
 

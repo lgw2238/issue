@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ <%@ include file="/WEB-INF/views/common.jsp" %>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src='https://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script>
 <script src="https://kit.fontawesome.com/17b5a91918.js" crossorigin="anonymous"></script>
 <script type="text/css" src="${pageContext.request.contextPath}/assets/css/weather.css"></script>
@@ -13,13 +14,17 @@
 
 $(document).ready(function() {
  	/* 당일 글로벌 날씨 데이터 */
-	getWeatherDataList();
+	getWeatherDataList('web');
 	drawMap('#container');
 });
 
 
-	function getWeatherDataList(){	
-//"${pageContext.request.contextPath}/api/weather/weatherListAjax"
+	function getWeatherDataList(point, parameter){	
+		var point = point;
+		var modalCity = parameter;
+		console.log("point:", point);
+		$("#dataValidation").val(point);
+		console.log("modalCity:", modalCity);
 		var location = {
 		        '01' : 'fas fa-sun',
 		        '02' : 'fas fa-cloud-sun',
@@ -32,8 +37,13 @@ $(document).ready(function() {
 		        '50' : 'fas fa-smog'
 		      };	
 
-	     var city = $("#inputCiryValue").val();
+		 /* 도시정보 세팅 */ 
+		 var city = $("#inputCiryValue").val();
+		 if(point == "modal"){
+			 city = modalCity;
+	     }
 	     console.log("city:", city);
+	     
 	     var appid = "46b55a9f61cc588200575a3dda8e3069";
 			 $.ajax({
 					async       : true,
@@ -48,8 +58,10 @@ $(document).ready(function() {
 					dataType    : "json",
 					success     : function(json) {				
 						var resultData = json.resultData;
+						var point = $("#dataValidation").val();
 						console.log("json:", json);
-						drawUITableWithWeather(json);
+						console.log("sucess::point:", point);
+						drawUITableWithWeather(json, point);
 	
 				},
 				error       : function(data, status, error) {
@@ -61,7 +73,11 @@ $(document).ready(function() {
 		}
 
 
-	function drawUITableWithWeather(resp){
+	function drawUITableWithWeather(resp, point){
+		if(point == "modal"){
+			popupTitle = resp.name;
+			createPopup("dialogWeather", popupTitle, true, 600, 405);
+		}else{
 		divInit();
 		var weatherIcon = {
 			    '01' : 'fas fa-sun',
@@ -94,7 +110,7 @@ $(document).ready(function() {
 	        $('.cloud').append($cloud);
 	        $('.temp_min').append($temp_min);
 	        $('.temp_max').append($temp_max);          
-
+		}
 
 	}
 
@@ -112,8 +128,10 @@ function divInit(){
 }
 
 function openWeatherModal(data){
-    var data = data;
-	console.log("data:", data);
+    var openModalCity = data;
+    $("#dataValidation").val("modal");
+	console.log("openWeatherModal::openModalCity:", openModalCity);
+	getWeatherDataList('modal', openModalCity);
 	/*  $.ajax({
 			async       : true,
 			type        : "POST",
@@ -243,7 +261,21 @@ function drawMap(target) {
 
 }
 
+function closeWeatherPopup(){	
+	$("#dialogWeather").dialog('close');
+}
 
+
+function createPopup(dId, dTitle, ifModal, dWidth, dHeight) {
+	$("#" + dId).dialog({
+		title : dTitle,
+		modal : ifModal,
+		width : dWidth,
+		height : dHeight
+	});
+
+	$("#"+dId).html(dTitle);
+}
 
 </script>
 
@@ -256,6 +288,11 @@ function drawMap(target) {
 		<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/favicon/favicon.ico">
 		<noscript><link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/noscript.css" /></noscript>
 	</head>
+	<!-- setting data 분기 hidden 값 -->
+	<form id="dataForm" name="dataForm" method="get" enctype="multipart/form-data">
+		<input type="hidden" id="dataValidation" name="dataValidation" /> 
+		<input type="hidden" id="cityName" name="cityName" />
+	</form>
 	<body class="is-preload">
 
 		<!-- Wrapper -->
@@ -311,7 +348,7 @@ function drawMap(target) {
 										<td>
 											<div class="buttonBox">
 												<span>
-													<input type="submit" value="조회" class="primary" onclick="javascript:getWeatherDataList();"/>
+													<input type="submit" value="조회" class="primary" onclick="javascript:getWeatherDataList('web');"/>
 												</span>
 											</div>		
 										</td>		
@@ -363,5 +400,42 @@ function drawMap(target) {
 					</div>
 
 			<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
+			
+			
+	<div id="dialogWeather" data-backdrop="false" style="display:none;">
+			<div class="p_inner noBtn">
+				<header class="p_header">
+					<h1 class="title">날씨 정보 불러오기</h1>
+				</header>
+				<div class="p_body">
+							<table>
+								<colgroup>
+									<col style="width:8.5%;" />
+									<col style="width:16.5%;" />
+									<col style="width:8.5%;" />
+									<col style="width:16.5%;" />
+									<col style="width:8.5%;" />
+									<col style="width:16.5%;" />
+									<col style="width:8.5%;" />
+									<col />
+								</colgroup>
+								<tbody>
+									<tr>
+									<h1>123123</h1>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<!-- e: 검색 -->
+					</div>
+					<!-- e: search -->
+				<a href="#" onclick="javascript:closeWeatherPopup();" class="p_close">팝업창 닫기</a>
+			</div>
+		</div>
+	<!-- 이벤트 팝업 끝 -->
 	</body>
+	
+	
+	
+	
 </html>

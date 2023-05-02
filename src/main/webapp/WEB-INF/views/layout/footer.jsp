@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
 <!DOCTYPE html>	
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ <%@ include file="/WEB-INF/views/common.jsp" %>
 <script type="text/javascript" >
 
 
@@ -135,12 +135,14 @@
 
 			</div>
 
-		<!-- Scripts -->
+		<!-- Scripts --> <!-- 
 			<script src="https://kit.fontawesome.com/17b5a91918.js" crossorigin="anonymous"></script>
-			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script> 
+			<script src="${pageContext.request.contextPath}/assets/jquery-ui.js"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/jquery.scrolly.min.js"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/jquery.scrollex.min.js"></script> 
 			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script> 
 			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
 			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script> 
-			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>		
+			 -->
