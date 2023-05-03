@@ -7,12 +7,14 @@
     position:absolute;
     left: 50%;
     top: 50%;
-    width:600px;
-    height:405px;
+    width:30%;
+    height:40%;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7);  
-    margin: 1150px 0px 0px -800px;
-    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.8);  
+    /* margin: 1150px 0px 0px -800px; */
+/*     padding: 5px; */
+    margin: 45% 0% 0% -30%;
+/*     margin: 0 auto; */
   }
   .item{
     width:100%;
@@ -97,7 +99,7 @@ $(document).ready(function() {
 			popupTitle = resp.name;
 			//warp
 			modalInit();
-			$("#modalCity").html(popupTitle);
+			$("#modalCity").html(changeCiryNameEngtoKor(popupTitle));
 			$("#modalTemp").html(Math.floor(resp.main.temp)+'º');		
 			$("#modalHumidity").html(resp.main.humidity+'%');
 			$("#modalWind").html(resp.wind.speed);
@@ -185,6 +187,50 @@ function openWeatherModal(data){
 			 
 		}
 	}); */
+}
+
+function changeCiryNameEngtoKor(name){
+
+	var CityName = name;
+	var returnValue = "";
+	if(CityName == "Gangwon-do"){
+		returnValue = "강원도";
+	}else if(CityName =="Gyeonggi-do"){
+		returnValue = "경기도";
+	}else if(CityName =="Incheon"){
+		returnValue = "인천";
+	}else if(CityName =="Seoul"){
+		returnValue = "서울";
+	}else if(CityName =="North Chungcheong"){
+		returnValue = "충청북도";
+	}else if(CityName =="Chungcheongnam-do"){
+		returnValue = "충청남도"; 
+	}else if(CityName =="Gyeongsangbuk-do"){
+		returnValue = "경상북도";
+	}else if(CityName =="Gyeongsangnam-do"){
+		returnValue = "경상남도";
+	}else if(CityName =="Daegu"){
+		returnValue = "대구";
+	}else if(CityName =="Ulsan"){
+		returnValue = "울산";
+	}else if(CityName =="Busan"){
+		returnValue = "부산";
+	}else if(CityName =="Sejong"){
+		returnValue = "세종";
+	}else if(CityName =="Jeollabuk-do"){
+		returnValue = "전라북도";
+	}else if(CityName =="Jeollanam-do"){
+		returnValue = "전라남도";
+	}else if(CityName =="Gwangju"){
+		returnValue = "광주"; 
+	}else if(CityName =="Jeju-do"){
+		returnValue = "제주특별자치도"
+	}else if(CityName =="Daejeon"){
+		returnValue = "대전";
+	}else {
+		returnValue = "데이터 없음";
+	}
+	return returnValue;
 }
 
 
@@ -444,7 +490,8 @@ function createPopup(dId, dTitle, ifModal, dWidth, dHeight) {
 				<div class="p_body">
 							<table class="item">
 								<colgroup>
-									<col style="width:14.5%;" />
+									<col style="width:21.5%;" />
+									<col style="width:16.5%;" />
 									<col style="width:16.5%;" />
 									<col style="width:14.5%;" />
 									<col style="width:16.5%;" />
@@ -452,16 +499,16 @@ function createPopup(dId, dTitle, ifModal, dWidth, dHeight) {
 								</colgroup>
 								<tbody>
 								    <tr>
-										<th class="tac"></th>
-										<td colspan="2"><div id="111"></div></td>
+										<th class="tac">날씨 상세정보</th>
+										<td colspan="3"><div id="modalDetail"></div></td>
 									</tr>
 									<tr>
 										<th class="tac">도시명</th>
-										<td colspan="2"><div id="modalCity"></div></td>
+										<td colspan="3"><div id="modalCity"></div></td>
 									</tr>
 									<tr>
 										<th class="tac">온도</th>
-										<td colspan="2"><div id="modalTemp"></div></td>
+										<td colspan="3"><div id="modalTemp"></div></td>
 									</tr>
 									<tr>
 										<th class="tac">습도</th>
