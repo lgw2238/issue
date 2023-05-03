@@ -2,6 +2,25 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
  <%@ include file="/WEB-INF/views/common.jsp" %>
+ <style>
+   .dialogWeather{
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    width:600px;
+    height:405px;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);  
+    margin: 1150px 0px 0px -800px;
+    padding: 5px;
+  }
+  .item{
+    width:100%;
+    height:100%;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+ /* .dialogWeather {display: flex; position:absolute; top:50%; left:50%; width: 600px; height: 405px;  } */
+ </style>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src='https://openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script>
 <script src="https://kit.fontawesome.com/17b5a91918.js" crossorigin="anonymous"></script>
@@ -76,7 +95,14 @@ $(document).ready(function() {
 	function drawUITableWithWeather(resp, point){
 		if(point == "modal"){
 			popupTitle = resp.name;
-			createPopup("dialogWeather", popupTitle, true, 600, 405);
+			//warp
+			modalInit();
+			$("#modalCity").html(popupTitle);
+			$("#modalTemp").html(Math.floor(resp.main.temp)+'º');		
+			$("#modalHumidity").html(resp.main.humidity+'%');
+			$("#modalWind").html(resp.wind.speed);
+			document.getElementById("dialogWeather").style.display = "block";
+			//createPopup("dialogWeather", popupTitle, true, 600, 405);
 		}else{
 		divInit();
 		var weatherIcon = {
@@ -127,6 +153,12 @@ function divInit(){
 
 }
 
+function modalInit(){
+	$("#modalCity").html("");
+	$("#modalTemp").html("");		
+	$("#modalHumidity").html("");
+	$("#modalWind").html("");
+}
 function openWeatherModal(data){
     var openModalCity = data;
     $("#dataValidation").val("modal");
@@ -262,7 +294,8 @@ function drawMap(target) {
 }
 
 function closeWeatherPopup(){	
-	$("#dialogWeather").dialog('close');
+	//$("#dialogWeather").dialog('close');
+	document.getElementById("dialogWeather").style.display = "none";
 }
 
 
@@ -402,26 +435,41 @@ function createPopup(dId, dTitle, ifModal, dWidth, dHeight) {
 			<%@ include file="/WEB-INF/views/layout/footer.jsp" %>
 			
 			
-	<div id="dialogWeather" data-backdrop="false" style="display:none;">
+	<div class="dialogWeather" id="dialogWeather" data-backdrop="false" style="display:none;">
+		<section class="popup_container visible">
 			<div class="p_inner noBtn">
 				<header class="p_header">
-					<h1 class="title">날씨 정보 불러오기</h1>
+				<!-- 	<h1 class="title">날씨 정보 불러오기</h1> -->
 				</header>
 				<div class="p_body">
-							<table>
+							<table class="item">
 								<colgroup>
-									<col style="width:8.5%;" />
+									<col style="width:14.5%;" />
 									<col style="width:16.5%;" />
-									<col style="width:8.5%;" />
+									<col style="width:14.5%;" />
 									<col style="width:16.5%;" />
-									<col style="width:8.5%;" />
-									<col style="width:16.5%;" />
-									<col style="width:8.5%;" />
 									<col />
 								</colgroup>
 								<tbody>
+								    <tr>
+										<th class="tac"></th>
+										<td colspan="2"><div id="111"></div></td>
+									</tr>
 									<tr>
-									<h1>123123</h1>
+										<th class="tac">도시명</th>
+										<td colspan="2"><div id="modalCity"></div></td>
+									</tr>
+									<tr>
+										<th class="tac">온도</th>
+										<td colspan="2"><div id="modalTemp"></div></td>
+									</tr>
+									<tr>
+										<th class="tac">습도</th>
+										<td colspan="3"><div id="modalHumidity"></div></td>
+									</tr>
+									<tr>
+										<th class="tac">풍속</th>
+										<td colspan="3"><div id="modalWind"></div></td>
 									</tr>
 								</tbody>
 							</table>
@@ -429,9 +477,10 @@ function createPopup(dId, dTitle, ifModal, dWidth, dHeight) {
 						<!-- e: 검색 -->
 					</div>
 					<!-- e: search -->
-				<a href="#" onclick="javascript:closeWeatherPopup();" class="p_close">팝업창 닫기</a>
+				<a onclick="javascript:closeWeatherPopup();" class="p_close" style="float: right;">CLOSE</a>
+				</section>
 			</div>
-		</div>
+		
 	<!-- 이벤트 팝업 끝 -->
 	</body>
 	
