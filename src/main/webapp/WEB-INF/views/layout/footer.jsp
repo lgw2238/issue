@@ -6,6 +6,8 @@
 
 
    function sendMail(){
+	  alert("현재 메일 연동이 되어있지 않습니다. \n다음에 시도해주시기 바랍니다.");
+	  return;
 	  var sendName =  $("#name").val();
 	  var sendEmail =  $("#email").val();
 	  var sendMessage = $("#message").val();
@@ -29,7 +31,8 @@
 	
 			},
 			error       : function(data, status, error) {
-				alert('error.status =' + status + '\nerror.data =' + data + '\nerror.error ='+ error);
+				//alert('error.status =' + status + '\nerror.data =' + data + '\nerror.error ='+ error);
+				alert('메일 전송에 실패 하였습니다 \n다시 시도해주시기 바랍니다.');
 				location.href = "${pageContext.request.contextPath}/error"
 			},complete : function(){
 				
