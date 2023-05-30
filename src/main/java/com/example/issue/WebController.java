@@ -26,6 +26,7 @@ public class WebController {
 		LocalDateTime localDateTime = LocalDateTime.now();
         String localDateTimeStr = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+        
 		String realIp = deviceUtil.getServerIp();
 		logger.info("======================================");
 		logger.info("접속 IP: {}", realIp);
