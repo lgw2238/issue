@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.7'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'war'
 }
 
 jar {
@@ -21,7 +22,7 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    providedCompile 'org.apache.tomcat.embed:tomcat-embed-jasper'
     implementation 'javax.servlet:jstl'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -33,6 +34,7 @@ dependencies {
 	implementation 'org.jsoup:jsoup:1.13.1'
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	
 }
 
 tasks.named('test') {

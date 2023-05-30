@@ -1,7 +1,8 @@
 package com.example.issue;
 
-import java.util.List;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.issue.api.vo.WeatherVo;
+import com.example.issue.util.deviceUtil;
 
 @Controller
 public class WebController {	
@@ -21,8 +23,15 @@ public class WebController {
 	
 	@RequestMapping("/")
 	public String jspCheck(Model model) {
-		System.out.println("main 화면 접속");
+		LocalDateTime localDateTime = LocalDateTime.now();
+        String localDateTimeStr = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
+		String realIp = deviceUtil.getServerIp();
+		logger.info("======================================");
+		logger.info("접속 IP: {}", realIp);
+		logger.info("접속 시간: {}", localDateTimeStr);
+		logger.info("======================================");
+		
 		return "main";
 	}
 	
